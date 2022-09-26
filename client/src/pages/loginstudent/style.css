@@ -1,0 +1,47 @@
+.form {
+    width: 30vw;
+    height: 70vh;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin: auto;
+}
+
+h2{
+    margin-bottom: 10px; 
+}
+form div{
+    margin-bottom: 15px;
+}
+
+.margin-10 {
+    margin-top: 20px; 
+    margin-bottom: 10px;
+}
+
+img{
+    max-width: 80%;
+    max-height: 30%;
+
+}
+
+.height {
+    height: 6vh;
+}
+
+#email-error {
+    display: none; 
+    text-align: left;
+    color: var(--errorred);
+    margin-bottom: 5px;
+}
+
+#password-error {
+    display: none; 
+    text-align: left;
+    color: var(--errorred);
+    margin-bottom: 5px;
+}
