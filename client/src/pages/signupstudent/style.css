@@ -1,0 +1,6 @@
+#error {
+    display: none; 
+    text-align: left;
+    color: var(--errorred);
+    margin-bottom: 5px;
+}

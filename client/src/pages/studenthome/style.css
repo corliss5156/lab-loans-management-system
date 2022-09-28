@@ -1,0 +1,50 @@
+#loan-table{
+    margin: 4vh 5vw; 
+    background-color: white;
+}
+
+td {
+    text-align: left;
+}
+body {
+    background-color: #F5F5F5;
+    font-family: 'Open Sans'; 
+    font-style: 'Regular';
+    font-size: 14px;
+  }
+
+
+#createloan button{
+    color: white; 
+    background-color: var(--lightblue);
+    border: none; 
+    border-radius: 0px;
+    padding: 8px 30px; 
+}
+
+#createloan {
+    text-align: right;
+    margin: 4vh 5vw;
+}
+
+.header {
+    font-size: 22px; 
+    background-color: var(--blue);
+    padding: 15px; 
+    color: white; 
+    text-align: left;
+}
+
+.rotate {
+    transform: rotate(90deg);
+}
+
+.arrow {
+    width: 0; 
+    height: 0; 
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    cursor: pointer;
+    border-left: 6px solid black;
+  }
+  

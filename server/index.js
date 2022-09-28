@@ -18,8 +18,10 @@ db.sequelize.sync().then(()=>{
 //Routes 
 const studentRouter = require("./routes/Student")
 app.use("/student", studentRouter)
-
-
+const loanrequestRouter = require("./routes/LoanRequest")
+app.use("/loanrequest", loanrequestRouter)
+const staffRouter = require("./routes/Staff")
+app.use("/staff", staffRouter)
 app.use(bodyParser.urlencoded({extended: true}))
 
 

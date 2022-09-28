@@ -7,14 +7,14 @@ const validateToken = require('../middlewares/AuthMiddleware')
 
 //Models 
 
-const {Students} = require("../models")
+const {Staffs} = require("../models")
 
 
 router.post("/", async (req, res)=>{
    
     const {email, password}= req.body; 
     bcrypt.hash(password, 10).then((hash)=>{
-        Students.create({
+        Staffs.create({
             email: email, 
             password: hash
         })
@@ -26,17 +26,17 @@ router.post("/", async (req, res)=>{
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
   
-    const student = await Students.findOne({ where: { email:email} });
+    const staff = await Staffs.findOne({ where: { email:email} });
     
-    if (!student) res.json({ error: "User Doesn't Exist" });
+    if (!staff) res.json({ error: "User Doesn't Exist" });
     else{
-       bcrypt.compare(password, student.password).then((match) => {
+       bcrypt.compare(password, staff.password).then((match) => {
         if (!match) res.json({ error: "Wrong Username And Password Combination" });
         else{
-            const accessToken = sign({username: student.email, id: student.id}, "secret")
+            const accessToken = sign({username: staff.email, id: staff.id}, "secret")
             res.json({
                 accessToken:accessToken, 
-                user: student.email, 
+                user: staff.email, 
             });
         }
       

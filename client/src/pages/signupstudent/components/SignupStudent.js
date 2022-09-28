@@ -6,7 +6,7 @@ import '../style.css';
 import Button from 'react-bootstrap/Button'; 
 import Form from 'react-bootstrap/Form';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 
 import logo from '../../../assets/svg/NTU_logo.svg'; 
 
@@ -14,7 +14,8 @@ import ENV from '../../../config.js';
 const API_HOST = ENV.api_host;
 
 function SignupStudent() {
-
+   
+  let navigate = useNavigate()
   
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -23,12 +24,20 @@ function SignupStudent() {
 
   const register = (event) =>{
     event.preventDefault()
-    console.log(API_HOST)
     axios.post(API_HOST + "/student", {
     email: email, 
     password: password
   }).then((response)=>{
-    console.log(response)
+    if (response.data === "Success") {
+      navigate('/student/login')
+
+    }
+    else {
+      document.getElementById("error").style.display = 'block'
+    }
+    
+  }).catch((err)=>{
+    console.log(err)
   })
 }
 
@@ -46,6 +55,7 @@ function SignupStudent() {
           <Form.Group> 
             <Form.Control className = "height" type = "password" placeholder = "Confirm password"/>
           </Form.Group>
+          <Form.Text id = "error"> Error. Try again later </Form.Text>
           <Button onClick = {register} className = "height btn-block margin-10" variant = "primary" type = "submit"> Sign up</Button>
         </Form>
       

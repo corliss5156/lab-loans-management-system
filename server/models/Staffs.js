@@ -1,6 +1,6 @@
 
 module.exports = (sequelize, DataTypes) =>{
-    const Students = sequelize.define("Students", {
+    const Staffs = sequelize.define("Staffs", {
         email:{
             type: DataTypes.STRING, 
             allowNull: false, 
@@ -13,5 +13,7 @@ module.exports = (sequelize, DataTypes) =>{
             allowNULL: false
         }
     })
-    return Students
+
+    return Staffs
 }
+

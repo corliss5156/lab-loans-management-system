@@ -5,9 +5,9 @@ import '../style.css';
 import Button from 'react-bootstrap/Button'; 
 import Form from 'react-bootstrap/Form';
 
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 import {AuthContext} from '../../../helpers/AuthContext';
-import logo from '../../../assets/svg/NTU_logo.svg'; 
+import logo from '../../../assets/svg/NTU_logo.svg';
 
 
 import ENV from '../../../config.js'; 
@@ -17,6 +17,7 @@ function LoginStudent() {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const auth = useContext(AuthContext)
   const { setAuthState } = useContext(AuthContext)
    
   let navigate = useNavigate()
@@ -30,25 +31,32 @@ function LoginStudent() {
     event.preventDefault()
     axios.post(url, data).then((response)=>{
       if(response.data.error){
-        console.log(response.data.error)
+      
         if(response.data.error ==="User Doesn't Exist"){
           document.getElementById("email-error").style.display = 'block'
         } else {
           document.getElementById("password-error").style.display = 'block'
         }
       } else{
-        
-        localStorage.setItem("accessToken", response.data)
-        setAuthState(true)
+        localStorage.setItem("accessToken", response.data.accessToken)
+       
+        setAuthState({user: response.data.user, status: true})
     
         navigate('/student/home')
       }
       
     }).catch(err => console.log(err))
   }
+  if (auth.authState.status===true){
+    return <Navigate replace to="/student/home" />;
+  }
+  else{
 
+  
   return (
+    
     <div className="h-100 align-items-center justify-content-center d-flex p-2 form">
+      
         <img src = {logo} alt = "NTU logo"/>
         <h2 className = "mb-3"> Log In </h2>
         <Form > 
@@ -73,6 +81,7 @@ function LoginStudent() {
     </div>
 
   )
+  }
 }
 
 export default LoginStudent
