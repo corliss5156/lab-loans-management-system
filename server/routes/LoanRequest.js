@@ -8,7 +8,15 @@ const validateToken = require('../middlewares/AuthMiddleware')
 const {LoanRequests} = require('../models')
 
 
-//Get all loans 
+//Get loan based on formreference 
+router.get('/:email/:formreference', async(req, res)=>{
+    const formreference = req.params.formreference
+    const loans = await LoanRequests.findAll({where: { formreference: formreference}})
+    res.json(loans)
+
+})
+
+
 
 //Get all loans for student 
 
@@ -34,4 +42,4 @@ router.post('/', async (req, res)=>{
 })
 
 
-module.exports = router
+module.exports = router 

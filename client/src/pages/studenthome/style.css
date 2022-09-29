@@ -47,4 +47,28 @@ body {
     cursor: pointer;
     border-left: 6px solid black;
   }
-  
+
+
+  #flex-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.flex-item {
+    width: 33%;
+    height: 200px;
+}
+
+
+
+h3{
+    font-size: 14px;
+    color: #535353;
+}
+
+p{
+    color:black; 
+}

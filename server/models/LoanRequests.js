@@ -1,4 +1,4 @@
-
+const Labs = require('./Labs')
 module.exports = (sequelize, DataTypes) =>{
     const LoanRequests = sequelize.define("LoanRequests", {
         formreference: {
@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) =>{
         }, 
         borrowername:{
             type: DataTypes.STRING, 
-            allowNull:false
+            allowNull:false, 
         }, 
         borroweremail: {
             type: DataTypes.STRING,
@@ -27,7 +27,8 @@ module.exports = (sequelize, DataTypes) =>{
             type: DataTypes.STRING, 
             validate: {
                 isEmail: true
-            }
+            }, 
+          
         }, 
         phonenumber: {
             type: DataTypes.INTEGER
@@ -39,6 +40,9 @@ module.exports = (sequelize, DataTypes) =>{
             }
         }, 
         location: {
+            type: DataTypes.STRING
+        }, 
+        groupmembers: {
             type: DataTypes.STRING
         }
     })

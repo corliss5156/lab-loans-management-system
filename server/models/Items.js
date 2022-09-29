@@ -1,18 +1,19 @@
-const Staffs = require("./Staffs")
+
 
 module.exports = (sequelize, DataTypes) =>{
-    const Labs = sequelize.define("Labs", {
-        lab: {
+    const Items= sequelize.define("Items", {
+        name: {
             type: DataTypes.STRING, 
             primaryKey: true
         }, 
-        staff: {
+        description: {
             type: DataTypes.STRING, 
-            primaryKey: true, 
+        }, 
+        subitems: {
+            type: DataTypes.STRING
         }
     })
-    
-    return Labs
+    return Items
 }
 
 
