@@ -28,6 +28,15 @@ router.get('/:email', async(req, res)=>{
 
 })
 
+
+router.get('/', async(req, res)=>{
+    
+    
+    const loans = await LoanRequests.findAll()
+    res.json(loans)
+
+})
+
 //Post loan request 
 
 router.post('/', async (req, res)=>{

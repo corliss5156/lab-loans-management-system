@@ -1,4 +1,3 @@
-const Staffs = require("./Staffs")
 
 module.exports = (sequelize, DataTypes) =>{
     const Labs = sequelize.define("Labs", {

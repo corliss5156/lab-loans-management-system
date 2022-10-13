@@ -1,0 +1,58 @@
+.report-div {
+    height: 15vh; 
+    margin: 2.5vh; 
+    padding-left: 1vw; 
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.approved {
+    background-color: var(--darkgreen) ;
+    text-align: left;
+}
+
+.submitted {
+    text-align: left;
+    background-color: var(--lightblue);
+}
+
+.approved div p {
+    color: white; 
+    font-size: 24px;
+}
+.approved div h4{
+    margin-top: 2.5vh;
+    font-size: 64px;
+    color: white; 
+}
+
+.submitted div p {
+    color: white; 
+    font-size: 24px;
+}
+.submitted div h4{
+    margin-top: 2.5vh;
+    font-size: 64px;
+    color: white; 
+}
+.md.img{
+    text-align: center;
+}
+
+.md.img img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    max-height: 100%;
+    height: 100%;
+    margin-top: 0px; 
+}
+
+
+
+#staff-table {
+    margin: 4vh 5vw; 
+    background-color: white;
+}

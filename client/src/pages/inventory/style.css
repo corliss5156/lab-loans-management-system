@@ -1,0 +1,105 @@
+#inventory-table{
+    margin: 4vh 5vw; 
+    background-color: white;
+}
+
+td {
+    text-align: left;
+}
+body {
+    background-color: #F5F5F5;
+    font-family: 'Open Sans'; 
+    font-style: 'Regular';
+    font-size: 14px;
+  }
+
+.grey {
+    background-color: #F5F5F5;
+}
+
+#grey {
+    background-color: #F5f5f5;
+}
+#grey td{
+    border: none; 
+}
+
+.stock {
+    height: 2vh;
+    width: 400px; 
+    display: flex; 
+    flex-direction: row;
+    padding: 0; 
+    border: none; 
+
+}
+
+.available{
+    background-color: var(--green);
+}
+
+.onloan {
+    background: var(--lightblue);
+}
+
+.labuse {
+    background-color: var(--red);
+}
+
+
+
+.dropdown {
+    width: 200px;
+    position: relative;
+    z-index: 5;
+    margin: 0 10px;
+  }
+
+.dropdown button {
+    width: 100%;
+  text-align: left;
+  padding: 10px;
+  border: 2px solid white;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #302E2E;
+  color: white;
+  position: relative;
+  --active-col: #302E2E;
+}
+
+
+custom-select {
+    position: relative;
+    display: inline-block;
+    font-size: 14px;
+    color: #888;
+    margin-top: 25px;
+  }
+  
+  .custom-select select {
+    display: block;
+    width: 250px;
+    min-height: 35px;
+    border-radius: 3px;
+    border: 2px solid black;
+    outline: none;
+    padding: 0 20px 0 10px;
+    margin-top: 5px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+  }
+  
+  
+  
+    
+#select-lab {
+    text-align: left;
+}
+
+#select-lab div {
+    margin: 4vh 5vw;
+}

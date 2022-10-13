@@ -3,9 +3,11 @@ import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom"; 
 import LoginStudent from './pages/loginstudent/components/LoginStudent';
+import LoginStaff from './pages/loginstaff/components/LoginStaff'
 import SignupStudent from './pages/signupstudent/components/SignupStudent';
+import SignupStaff from './pages/signupstaff/components/SignUpStaff';
 import Student from './pages/studenthome/components/Student';
-import Labtech from './pages/labtechhome/components/Labtech';
+import Staff from './pages/staffhome/components/Staff';
 import Error from './pages/error/components/Error';
 import Loan from './pages/loans/components/Loan';
 import Inventory from './pages/inventory/components/Inventory';
@@ -53,11 +55,11 @@ function App() {
           <Routes> 
             <Route path = "/student/login" element = {<LoginStudent />} />
             <Route path = "/student/signup" element = {<SignupStudent />}  />
-            {/* <Route path = "/staff/signup" element = {<LoginStaff/>} />
-            <Route path = "/staff/login" element = {<SignupStaff/>} /> */}
+            <Route path = "/staff/login" element = {<LoginStaff/>} />
+            <Route path = "/staff/signup" element = {<SignupStaff/>} /> 
             <Route path = "/forgotpassword" element = {<Forgotpassword/>} />
             <Route path = "/student/home" element = {<Student/>}  /> 
-            <Route path = "/staff/home" element = {<Labtech />} />
+            <Route path = "/staff/home" element = {<Staff />} />
             <Route path = "/staff/inventory" element = {<Inventory />} />
             <Route path = "/staff/loan" element = {<Loan />} />
             <Route path = "/staff/report" element = {<Report />} />

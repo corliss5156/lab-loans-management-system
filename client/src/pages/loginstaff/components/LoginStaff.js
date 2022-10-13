@@ -13,7 +13,7 @@ import logo from '../../../assets/svg/NTU_logo.svg';
 import ENV from '../../../config.js'; 
 const API_HOST = ENV.api_host;
 
-function LoginStudent() {
+function LoginStaff() {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -26,7 +26,7 @@ function LoginStudent() {
     //Front end error 
     document.getElementById("email-error").style.display = 'none'
     document.getElementById("password-error").style.display = 'none'
-    const url = API_HOST + `/student/login`
+    const url = API_HOST + `/staff/login`
     const data = {email: email, password: password}
     event.preventDefault()
     axios.post(url, data).then((response)=>{
@@ -40,15 +40,15 @@ function LoginStudent() {
       } else{
         localStorage.setItem("accessToken", response.data.accessToken)
        
-        setAuthState({user: response.data.user, status: true, userType: "student"})
+        setAuthState({user: response.data.user, status: true, userType: "staff"})
     
-        navigate('/student/home')
+        navigate('/staff/home')
       }
       
     }).catch(err => console.log(err))
   }
   if (auth.authState.status===true){
-    return <Navigate replace to="/student/home" />;
+    return <Navigate replace to="/staff/home" />;
   }
   else{
 
@@ -72,7 +72,7 @@ function LoginStudent() {
           <Button onClick = {login} className = "height btn-block margin-10" variant = "primary" type = "submit"> Log in </Button>
         </Form>
       
-        <p className = "text-center"> <Link to = '/student/signup'> Sign up Now</Link> </p>
+        <p className = "text-center"> <Link to = '/staff/signup'> Sign up Now</Link> </p>
           
         
         
@@ -84,4 +84,4 @@ function LoginStudent() {
   }
 }
 
-export default LoginStudent
+export default LoginStaff

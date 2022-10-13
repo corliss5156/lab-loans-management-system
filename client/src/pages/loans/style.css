@@ -1,0 +1,56 @@
+.arrow {
+    width: 0; 
+    height: 0; 
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    cursor: pointer;
+    border-left: 6px solid black;
+  }
+
+  .header {
+    font-size: 22px; 
+    background-color: var(--blue);
+    padding: 15px; 
+    color: white; 
+    text-align: left;
+}
+
+
+.rotate {
+    transform: rotate(90deg);
+}
+
+
+#flex-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.sm {
+    width: 25%; 
+}
+
+.md {
+    width: 50%;
+}
+
+
+h3{
+    font-size: 14px;
+    color: var(--grey)
+}
+
+p{
+    color:black; 
+}
+
+.expanded{
+    display: none;
+}
+
+.no-reports {
+    text-align: center;
+}

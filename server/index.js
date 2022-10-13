@@ -15,6 +15,7 @@ db.sequelize.sync({alter: true}).then(()=>{
         console.log("Running on port 3001")
     })
 })
+
 //Routes 
 const studentRouter = require("./routes/Student")
 app.use("/student", studentRouter)
@@ -28,8 +29,16 @@ const itemRouter = require("./routes/Item")
 app.use("/item", itemRouter)
 const loanitemRouter = require("./routes/LoanItem")
 app.use("/loanitem", loanitemRouter)
+
+const stockRouter = require("./routes/Stock")
+app.use("/stock", stockRouter)
+
+
+const inventorystockRouter = require("./routes/Inventorystock")
+app.use("/inventorystock", inventorystockRouter)
+
+const reportRouter = require("./routes/Report")
+app.use("/report", reportRouter)
 app.use(bodyParser.urlencoded({extended: true}))
-
-
 
 
