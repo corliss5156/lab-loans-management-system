@@ -1,8 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react'
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../../../helpers/AuthContext';
+import Button from 'react-bootstrap/esm/Button';
 import NavigationStaff from '../../Navigation/components/NavigationStaff'
 import InventoryTable from './InventoryTable';
+import Staffcreateitem from '../../modals/components/Staffcreateitem';
 import ENV from '../../../config.js'; 
 import {MdArrowDropDown} from 'react-icons/md'
 import axios from 'axios';
@@ -18,7 +20,7 @@ function Inventory() {
     axios.get(url).then((response)=>{
       setLabs(response.data)
     })
-  })
+  },[])
 
   const selectChange = (e) =>{
     if (e.target.value !== "All labs"){
@@ -29,15 +31,22 @@ function Inventory() {
     }
     
   }
+  const createItem = ()=>{
+    const modal = document.getElementById('modal-create-item')
+    modal.style.display = 'block'
+  }
   if (auth.authState.status ===false) {
     return <Navigate replace to="/student/login" />;
   }else{
   return (
     <div> 
         <NavigationStaff current = "Inventory" />
+        
+          
         <div id = "select-lab"> 
           <div>
-          <label class = "custom-select"> 
+          
+          <label class = "custom-select float-left"> 
           Select lab
             <select onChange = {selectChange} className = "custom-select-wrapper"> 
               <option val = ""> All labs </option> 
@@ -49,8 +58,13 @@ function Inventory() {
             </select> 
             
           </label>
+          <Button className = 'float-right' onClick = {createItem}> Create Item </Button>
           </div>
+          
+        
         </div>
+        <Staffcreateitem /> 
+        
          <div id = "inventory-table"> 
           <InventoryTable selected = {selected}/>
         </div>

@@ -11,9 +11,13 @@ module.exports = (sequelize, DataTypes) =>{
         }, 
         subitems: {
             type: DataTypes.STRING
+        }, 
+        remark: {
+            type: DataTypes.STRING
         }
     })
+    
     return Items
+    
 }
-
 

@@ -78,7 +78,7 @@ custom-select {
   }
   
   .custom-select select {
-    display: block;
+    display: inline-block;
     width: 250px;
     min-height: 35px;
     border-radius: 3px;
@@ -98,8 +98,17 @@ custom-select {
     
 #select-lab {
     text-align: left;
+    height: 7.5vh;
 }
 
 #select-lab div {
-    margin: 4vh 5vw;
+   margin: 4vh 5vw;
+}
+
+.float-left{
+    float: left; 
+}
+
+.float-right{
+    float:right; 
 }

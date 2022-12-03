@@ -1,4 +1,5 @@
 const express = require('express')
+
 const app = express()
 const mysql = require('mysql2')
 const cors = require('cors')
@@ -10,11 +11,6 @@ app.use(cors())
 
 const db  = require("./models")
 
-db.sequelize.sync({alter: true}).then(()=>{
-    app.listen(3001, ()=> {
-        console.log("Running on port 3001")
-    })
-})
 
 //Routes 
 const studentRouter = require("./routes/Student")
@@ -39,6 +35,16 @@ app.use("/inventorystock", inventorystockRouter)
 
 const reportRouter = require("./routes/Report")
 app.use("/report", reportRouter)
+
+
+const LoanFormTemplateRouter = require("./routes/LoanFormTemplate")
+app.use("/loanformtemplate", LoanFormTemplateRouter)
+
 app.use(bodyParser.urlencoded({extended: true}))
 
 
+db.sequelize.sync({alter: true}).then(()=>{
+    app.listen(3001, ()=> {
+        console.log("Running on port 3001")
+    })
+})

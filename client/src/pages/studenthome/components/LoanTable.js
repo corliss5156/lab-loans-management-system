@@ -6,21 +6,22 @@ import ExpandedTable from "./ExpandedTable";
 import ENV from '../../../config.js'; 
 import { FiEdit } from "react-icons/fi";
 import '../style.css'
+import Studentshowloan from "../../modals/components/Studentshowloan";
 const API_HOST = ENV.api_host;
 
 
-function LoanTable(){
+function LoanTable(props){
+
     
-  const auth = useContext(AuthContext)
   const [loans, setLoans] = useState([])
-  
-  useEffect(()=>{
+  const auth = useContext(AuthContext)
+
+  useEffect(()=> {
     const url = API_HOST + "/loanrequest/" + auth.authState.user 
     axios.get(url).then((response)=>{
         setLoans(response.data)
     })
-  }, [])
-
+  }, [props.loanSubmit])
   
 
   const expand = (e) =>{
@@ -38,8 +39,16 @@ function LoanTable(){
       }  
       
   }
+  
+  const showLoan = (e) => {
+      const formreference = e.target.parentElement.parentElement.firstChild.nextSibling.textContent.toString().trim()
+      
+      const modal = document.getElementById('modal-show-loan-'+ formreference) 
+      modal.style.display = 'block'
+  }
   return (
     <div> 
+    
       <div className = 'header'> All loans </div>
       <Table >
       <thead>
@@ -66,10 +75,11 @@ function LoanTable(){
               <td> {loan.returndate} </td> 
               <td> {loan.location}</td>
               <td> {loan.status} </td>
-              <td > <FiEdit /> </td>
+              <td > <FiEdit className = 'cursor' onClick = {showLoan} /> </td>
             </tr>
             <ExpandedTable key = {loan.formreference + "-expanded"} loan = {loan} />
-
+            <Studentshowloan formreference={loan.formreference}/> 
+            
             </>
             
           

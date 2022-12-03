@@ -21,7 +21,7 @@ export default function ExpandedTable({item}) {
         
     }, [])
   return (
-    <tr id = {item.name + '-expanded'}className='expanded'>
+    <tr id = {item.name + item.lab + '-expanded'}className='expanded'>
          <td> </td>
         <td className = "grey" colSpan = {8}>
             <div id = "flex-container"> 

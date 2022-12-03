@@ -14,13 +14,6 @@ body {
   }
 
 
-#createloan button{
-    color: white; 
-    background-color: var(--lightblue);
-    border: none; 
-    border-radius: 0px;
-    padding: 8px 30px; 
-}
 
 #createloan {
     text-align: right;
@@ -49,7 +42,7 @@ body {
   }
 
 
-  #flex-container {
+  .flex-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;

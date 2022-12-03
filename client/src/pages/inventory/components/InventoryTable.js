@@ -91,11 +91,11 @@ function InventoryTable({selected}){
           else {
             return(
               <>
-  <tr id = {item.name} key = {item.name}>
+  <tr id = {item.name + item.lab} key = {item.name}>
                 <td > <div onClick  = {expand} className = 'arrow'> </div></td>
                 <td> {item.name} </td>
                 <td> {item.description} </td> 
-                <td className = "stocktd" colSpan={3}> <StockDiv name = {item.name + item.lab}available = {item.Available} onloan = {item.OnLoan} labuse = {item.LabUse} /></td>
+                <td className = "stocktd" colSpan={3}> <StockDiv name = {item.name + item.lab} available = {item.Available} onloan = {item.OnLoan} labuse = {item.LabUse} /></td>
                 <td> {item.lab}</td>
                 <td> {item.Available + item.OnLoan + item.LabUse} </td>
                 <td> {item.Available} </td> 
@@ -103,7 +103,7 @@ function InventoryTable({selected}){
                 <td> {item.LabUse} </td>
                 <td > <FiEdit /> </td>
               </tr>
-              <ExpandedTable key = {item.name + "-expanded"} item = {item}/>
+              <ExpandedTable key = {item.name + item.lab + "-expanded"} item = {item}/>
   
               </>
               

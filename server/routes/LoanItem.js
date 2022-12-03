@@ -27,5 +27,21 @@ router.post('/', async (req, res)=>{
     
 })
 
+router.put('/:formreference/item', async (req, res)=>{
+    const qtyreceived = req.body.qtyreceived
+    const item = req.body.item
+    await LoanItems.update({qtyreceived: qtyreceived}, {where: {
+        formreference: req.params.formreference, 
+        item: item
+    }})
+    res.json(
+        {
+            "formreference": req.params.formreference, 
+            "item": item, 
+            "qtyreceived": req.body.qtyreceived
+        }
+    )
+})
+
 
 module.exports = router 

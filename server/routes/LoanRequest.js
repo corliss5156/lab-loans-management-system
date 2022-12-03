@@ -50,5 +50,17 @@ router.post('/', async (req, res)=>{
     
 })
 
+//Update loan status
 
-module.exports = router 
+router.put('/status/:formreference', async(req, res)=>{
+    const newstatus = req.body.status
+    await LoanRequests.update({status: newstatus}, {where: {
+        formreference: req.params.formreference
+    }})
+    res.json({
+        "formreference": req.params.formreference, 
+        "status": newstatus
+    })
+})
+  
+module.exports = router

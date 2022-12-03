@@ -11,7 +11,7 @@ const setWidth = (parentwidth, total, div) =>{
 
 
 useEffect(()=>{
-    const parent = document.getElementById(name)
+    const parent = document.getElementById(name + "stock")
     const parentwidth = parent.offsetWidth
     
     const total = available + onloan + labuse
@@ -24,7 +24,7 @@ useEffect(()=>{
 })
   return (
     <>
-    <div id = {name} className='stock'>
+    <div id = {name + "stock"} className='stock'>
         <div  className = "available"></div>
         <div className = "onloan"> </div>
         <div  className = "labuse"></div>      

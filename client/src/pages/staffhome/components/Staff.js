@@ -1,18 +1,14 @@
-import React, { useEffect, useContext } from 'react'
+import React from 'react'
 import NavigationStaff from '../../Navigation/components/NavigationStaff'
-import { AuthContext } from '../../../helpers/AuthContext'
-import { redirect, useNavigate } from 'react-router-dom'
+
 import Reports from './Reports'
 import Staffs from './Staffs'
 function Staff() {
-  const auth = useContext(AuthContext)
-  const navigate = useNavigate()
-  const { setAuthState } = useContext(AuthContext)
   
   return (
     <div> 
       <NavigationStaff current = "Home" />
-      <div id = "flex-container"> 
+      <div className = "flex-container"> 
         <div className='md'> 
           <div> 
             <Reports />

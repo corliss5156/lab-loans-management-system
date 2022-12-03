@@ -29,7 +29,7 @@ function SignupStaff() {
     password: password
   }).then((response)=>{
     if (response.data === "Success") {
-      navigate('/saff/login')
+      navigate('/staff/login')
 
     }
     else {
