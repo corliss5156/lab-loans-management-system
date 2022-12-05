@@ -13,15 +13,17 @@ body {
     font-size: 14px;
   }
 
-.grey {
+#grey {
     background-color: #F5F5F5;
 }
 
-#grey {
-    background-color: #F5f5f5;
+#flex-container{
+    padding: 5% 5% 2.5% 5%; 
 }
+
 #grey td{
     border: none; 
+
 }
 
 .stock {

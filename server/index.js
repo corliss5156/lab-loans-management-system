@@ -30,8 +30,8 @@ const stockRouter = require("./routes/Stock")
 app.use("/stock", stockRouter)
 
 
-const inventorystockRouter = require("./routes/Inventorystock")
-app.use("/inventorystock", inventorystockRouter)
+// const inventorystockRouter = require("./routes/Inventorystock")
+// app.use("/inventorystock", inventorystockRouter)
 
 const reportRouter = require("./routes/Report")
 app.use("/report", reportRouter)

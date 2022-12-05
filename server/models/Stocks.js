@@ -3,21 +3,26 @@ module.exports = (sequelize, DataTypes) =>{
     const Stocks = sequelize.define("Stocks", {
         lab: {
             type: DataTypes.STRING, 
-            primaryKey: true
-        }, 
-        item: {
-            type: DataTypes.STRING, 
             primaryKey: true, 
+            references: {
+                model: "Labs", 
+                key: "lab"
+            }
         }, 
-        quantity: {
-            type: DataTypes.INTEGER
-        }, 
-        status: {
+        
+        itemname: {
             type: DataTypes.STRING, 
-            validate: {
-                isIn: [['On loan', 'Available', 'Lab use']]
-            }, 
             primaryKey: true
+            
+        },
+        Available: {
+            type: DataTypes.INTEGER
+        },
+        OnLoan: {
+            type: DataTypes.INTEGER
+        },
+        LabUse: {
+            type:DataTypes.INTEGER
         }
         
     })

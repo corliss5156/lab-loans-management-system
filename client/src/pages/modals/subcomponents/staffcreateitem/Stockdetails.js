@@ -20,7 +20,6 @@ const Stockdetails = forwardRef(({childnavigate, stock,setStock}, ref)=>{
         if(stock.length ===0 ){
             axios.get(API_HOST+"/lab").then((response)=>{
             setLabs(response.data)
-            console.log((stock))
             
             Array.from(response.data).forEach((lab)=>{
                 temp.push( 
@@ -50,7 +49,7 @@ const Stockdetails = forwardRef(({childnavigate, stock,setStock}, ref)=>{
     const tr = e.target.parentElement.parentElement.parentElement
     const divs = tr.getElementsByClassName('input')
     const totaltd = tr.firstChild.nextSibling
-    console.log(totaltd)
+    
     let total = 0
     Array.from(divs).forEach((div)=>{
         if(div.value){
@@ -65,7 +64,6 @@ const Stockdetails = forwardRef(({childnavigate, stock,setStock}, ref)=>{
     } else{
         totaltd.innerHTML = total
     }
-    console.log(total)
  }
  const submit = ()=>{
     childnavigate('3')
@@ -85,15 +83,14 @@ const Stockdetails = forwardRef(({childnavigate, stock,setStock}, ref)=>{
             </thead>
             <tbody>
                 {Array.from(stock).map((labstock)=>{
-                    console.log(labstock)
+                   
                     return(
                         <tr> 
                             <td> {labstock.lab}</td> 
                             <td> {labstock['Available'] + labstock['Lab Use'] + labstock['On Loan']}</td>
                             <td> 
                                 <div className="numberspinner-container">
-                                    <input min="0" onInput="this.value = 
- !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" type="number" name = "Available" className="input"  onChange = {handleChange} placeholder = {labstock.Available}/> 
+                                    <input min="0" type="number" name = "Available" className="input"  onChange = {handleChange} placeholder = {labstock.Available}/> 
                                 </div>
                             </td>
                             <td> 

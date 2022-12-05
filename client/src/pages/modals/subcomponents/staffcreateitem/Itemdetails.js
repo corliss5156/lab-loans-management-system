@@ -36,7 +36,7 @@ const Itemdetails = forwardRef(({childnavigate, item, setItem}, ref) =>{
         axios.get(API_HOST+"/item").then((response)=>{
             const temp = []
             Array.from(response.data).forEach((item)=>{
-                temp.push({'value': item.name, 'label': item.name})
+                temp.push({'value': item.id, 'label': item.name})
             })
             setAllItems(temp)
         })
@@ -53,7 +53,6 @@ const Itemdetails = forwardRef(({childnavigate, item, setItem}, ref) =>{
     const handleSelect = (e)=>{
         const temp =[]
         e.forEach((item)=>{
-            console.log(item)
             temp.push(item)
         })
         setSubItems(temp)
@@ -75,7 +74,7 @@ const Itemdetails = forwardRef(({childnavigate, item, setItem}, ref) =>{
             </Form.Group>
             <Form.Group>
                 <Form.Label> Sub Items </Form.Label> 
-                <Select defaultValue = {item.subitems} onChange= {handleSelect}classNamePrefix="select" closeMenuOnSelect={false} isMulti className = 'basic-multi-select' options = {allItems} />
+                <Select defaultValue = {item.subitems} onChange= {handleSelect} classNamePrefix="select" closeMenuOnSelect={false} isMulti className = 'basic-multi-select' options = {allItems} />
             </Form.Group>
             
             <Form.Group> 

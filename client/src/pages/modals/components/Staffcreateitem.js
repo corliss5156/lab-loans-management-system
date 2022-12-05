@@ -5,7 +5,7 @@ import Itemdetails from '../subcomponents/staffcreateitem/Itemdetails'
 import Review from '../subcomponents/staffcreateitem/Review'
 import Stockdetails from '../subcomponents/staffcreateitem/Stockdetails'
 
-export default function Staffcreateitem() {
+export default function Staffcreateitem({handleSetItemSubmit}) {
     const [page, setPage] = useState("1")
     const [item, setItem] = useState({
         name: "", 
@@ -88,7 +88,7 @@ export default function Staffcreateitem() {
             <div> 
                 {page === "1"? <Itemdetails ref = {itemssubmit} childnavigate = {childnavigate} item = {item} setItem = {setItem} /> : null}
                 {page ==="2"? <Stockdetails childnavigate = {childnavigate} stock = {stock} setStock = {setStock} /> : null}
-                {page === "3"? <Review childnavigate = {childnavigate} stock = {stock} item = {item} />: null }
+                {page === "3"? <Review handleSetItemSubmit={handleSetItemSubmit} stock = {stock} item = {item} />: null }
             </div>
         </div>
     </div>

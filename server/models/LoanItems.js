@@ -9,7 +9,11 @@ module.exports = (sequelize, DataTypes) =>{
         }, 
         item: {
             type: DataTypes.STRING, 
-            primaryKey: true
+            primaryKey: true, 
+            references: {
+                model: "Items", 
+                key: 'name'
+                        }
         }, 
         qtyreceived: {
             type: DataTypes.INTEGER

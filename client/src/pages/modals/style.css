@@ -383,3 +383,27 @@ select {
   padding: 1% 1% 0.5% 1%; 
   background-color: #eeeeee;
 }
+
+
+/* Hover */
+.hover{
+  display: none; 
+}
+
+.hover-text {
+  background-color: #555;
+  padding: 2.5%; 
+  position: relative;
+  color: white; 
+  top: 5%; 
+}
+
+.arrow-up {
+  width: 0; 
+  height: 0; 
+  position: relative;
+  top: 5%; 
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #555;
+}

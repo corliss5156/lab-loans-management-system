@@ -1,13 +1,18 @@
 import React, { useEffect, useContext, useState } from 'react'
+
+//Bootstrap 
 import Form from 'react-bootstrap/Form'
-import { AuthContext } from '../../../helpers/AuthContext'
-import axios from 'axios'
-import ENV from '../../../config.js'; 
 import {FiAlertCircle} from 'react-icons/fi'
 import {FiEdit} from 'react-icons/fi'
 import {AiOutlineDownload} from 'react-icons/ai'
 import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button'
+
+//Backend
+import { AuthContext } from '../../../helpers/AuthContext'
+import axios from 'axios'
+import ENV from '../../../config.js'; 
+
 const API_HOST = ENV.api_host;
 
 export default function Staffeditloan({email, formreference, handleUpdate}) {

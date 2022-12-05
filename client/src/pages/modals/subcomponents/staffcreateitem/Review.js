@@ -6,10 +6,50 @@ import Form from 'react-bootstrap/Form'
 import Select from 'react-select'
 import Table from 'react-bootstrap/Table'
 
-export default function Review({childnavigate, stock, item}) {
-    useEffect(()=>{
-        console.log(stock, item)
-    })
+//Backend
+import axios from 'axios'
+import ENV from '../../../../config.js'; 
+const API_HOST = ENV.api_host
+
+
+export default function Review({handleSetItemSubmit, stock, item}) {
+    
+    const submit = (e)=>{
+        e.preventDefault()
+        const subitems = []
+        item.subitems.forEach((subitem)=>{
+            subitems.push(subitem.value)
+        })
+        
+        //Upload item
+        axios.post(API_HOST +'/item', {
+            name: item.name, 
+            description: item.description, 
+            remark: item.remark, 
+            subitems: subitems.toString()
+        }).then((response)=>{
+            console.log(response.data)
+        })
+
+        
+        //Add stock 
+        stock.forEach((stocklevel)=>{
+            axios.post(API_HOST+'/stock', {
+                lab: stocklevel.lab, 
+                itemname: item.name, 
+                Available: stocklevel.Available, 
+                OnLoan: stocklevel['On Loan'], 
+                LabUse: stocklevel['Lab Use']
+
+        }).then((response)=>{
+        })
+        })
+      //Close modal
+      const modal = document.getElementById('modal-create-item')
+        modal.style.display = 'none'
+        handleSetItemSubmit()
+        
+    }
     return (
         <div className='modal-sub-page' >
         <Form>
@@ -49,7 +89,7 @@ export default function Review({childnavigate, stock, item}) {
                     {stock.map((stocklevel)=>{
                         const total = parseInt(stocklevel['Available']) + parseInt(stocklevel['On Loan']) + parseInt(stocklevel['Lab Use'])
                         return(
-                            <tr> 
+                            <tr key = {stocklevel.lab +"-" +stocklevel.itemname}> 
                                 <td>{stocklevel.lab}</td> 
                                 <td> {total} </td>
                                 <td>{stocklevel['Available']}</td>
@@ -63,7 +103,7 @@ export default function Review({childnavigate, stock, item}) {
             </Table>
         </div>
         <div className = 'form-footer'> 
-            <Button  className = "btn-block" variant = "primary" type = "submit"> Submit </Button>
+            <Button onClick = {submit} className = "btn-block" variant = "primary" type = "submit"> Submit </Button>
         </div>
     </div>
   )
