@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) =>{
         email:{
             type: DataTypes.STRING, 
             allowNull: false, 
+            primaryKey: true, 
             validate: {
                 isEmail: true
             }
@@ -11,6 +12,9 @@ module.exports = (sequelize, DataTypes) =>{
         password: {
             type: DataTypes.STRING, 
             allowNULL: false
+        }, 
+        labs: {
+            type: DataTypes.STRING
         }
     })
 

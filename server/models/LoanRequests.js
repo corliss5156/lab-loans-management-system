@@ -12,7 +12,10 @@ module.exports = (sequelize, DataTypes) =>{
         }, 
         borroweremail: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false, 
+            validate: {
+                isEmail: true
+            }
         }, 
         borrowdate: {
             type: DataTypes.DATEONLY
@@ -27,8 +30,7 @@ module.exports = (sequelize, DataTypes) =>{
             type: DataTypes.STRING, 
             validate: {
                 isEmail: true
-            }, 
-          
+            }
         }, 
         phonenumber: {
             type: DataTypes.INTEGER
@@ -36,13 +38,16 @@ module.exports = (sequelize, DataTypes) =>{
         status: {
             type: DataTypes.STRING, 
             validate: {
-                isIn: [['On loan', 'Partial', 'Complete']]
+                isIn: [['To Be Approved', 'On Loan', 'Partial', 'Complete']]
             }
         }, 
-        location: {
+        lab: {
+            type: DataTypes.STRING
+       },
+        groupmembers: {
             type: DataTypes.STRING
         }, 
-        groupmembers: {
+        remark: {
             type: DataTypes.STRING
         }
     })

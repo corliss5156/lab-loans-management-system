@@ -1,56 +1,53 @@
 
 import React, { useEffect, useState } from 'react'
 import ENV from '../../../config.js'; 
+
+//Bootstrap
 import Table from 'react-bootstrap/esm/Table.js';
+import Staffupdateimage from '../../modals/components/Staffupdateimage.js';
+import Tippy from '@tippyjs/react'
+import 'tippy.js/dist/tippy.css';
+import { AiOutlineEdit } from 'react-icons/ai';
 //Backend
 import axios from 'axios'
 const API_HOST = ENV.api_host;
 
-export default function ExpandedTable({stock}) {
+export default function ExpandedTable({stock, editItem}) {
     const [itemstock, setItemstock] = useState([])
     const [itemDetail, setItemDetail] = useState([])
-    const [subitems, setSubItems] = useState([])
+    const [image, setImage] = useState("")
     useEffect(()=>{
-
        axios.get(API_HOST+"/stock/itemname/"+ encodeURIComponent(stock.itemname)).then((response)=>{
         setItemstock(response.data)
        })
 
        axios.get(API_HOST+"/item/"+encodeURIComponent(stock.itemname)).then((response)=>{
        
-        if(response.data[0].subitems!==""){
-            const subitem = response.data[0].subitems.split(",")
-            const subitemstemp = []
-
-            subitem.forEach((subitemid)=>{
-            axios.get(API_HOST+"/item/id/"+subitemid).then((response)=>{
-                subitemstemp.push(response.data[0].name)
-                
-                setSubItems(subitemstemp)
-            })
-            })
-            
             setItemDetail({
                 name: response.data[0].name,
                 description: response.data[0].description, 
                 remark: response.data[0].remark, 
-                subitems: subitems
+                imageid: response.data[0].imageid
             })
+            if (response.data[0].imageid !== null){
+                axios.get(API_HOST + '/image/'+ response.data[0].imageid).then((response)=>{
+           
+                    setImage(response.data.image)
+                    
+                    
+                })
+            }
             
-        }else {
-            setItemDetail({
-                name: response.data[0].name,
-                description: response.data[0].description, 
-                remark: response.data[0].remark
-            })
-        }
-        
-        
-      
     })
         
         
-    }, [])
+    }, [editItem])
+    
+    const showModal = (e)=> {
+        console.log(e)
+        const modal = document.getElementById("modal-update-image-"+ e.target.alt)
+        modal.style.display = "block"
+    }
   return (
     
      <tr id = {stock.itemname + "-" + stock.lab + '-expanded'}className='expanded'>
@@ -97,14 +94,21 @@ export default function ExpandedTable({stock}) {
                 <h3> Remarks </h3> 
                 <p> {itemDetail.remark===""? "No remark": itemDetail.remark} </p> 
             </div> 
-            <div> 
-                <h3> Subitems </h3>
-                <p> {itemDetail.subitems===""? "No subitems": subitems.toString()} </p>
-            </div> 
+        
         </td>
         <td className='grey' colSpan = {6}>
-                <div className='md'> 
-                    <h3> image</h3>
+                <div  className='md'> 
+                   
+                    
+                
+                        <h3> Image</h3>
+                        {image!== ""? 
+                        
+                        <img src= {image} alt={itemDetail.imageid} onClick = {showModal} className="img-overlay-image"/>
+                       
+                      : <button >No image found</button>}
+                    
+                    <Staffupdateimage img = {image} itemDetail = {itemDetail} />
                 </div>
         
         </td>

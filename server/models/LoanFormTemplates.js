@@ -1,3 +1,4 @@
+const Items = require("./Items")
 
 
 module.exports = (sequelize, DataTypes) =>{
@@ -5,19 +6,22 @@ module.exports = (sequelize, DataTypes) =>{
         loanreason: {
             type: DataTypes.STRING, 
             primaryKey: true, 
+            
         }, 
         qtytoreceive: {
             type: DataTypes.INTEGER
         }, 
+        
         mainitem: {
             type: DataTypes.STRING
         }, 
         item: {
-            type: DataTypes.STRING, 
-            primaryKey: true, 
+            type: DataTypes.STRING,
+            foreignKey: true, 
+            primaryKey: true,
             references: {
                 model: "Items", 
-                key: 'name'
+                key: "name"
             }
         }
     })

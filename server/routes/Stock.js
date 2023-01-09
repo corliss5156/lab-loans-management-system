@@ -1,7 +1,7 @@
  
 const express = require('express')
 const router = express.Router()
-
+const { Op } = require("sequelize");
 const {Stocks} = require('../models')
 
 router.get("/", async(req,res)=>{
@@ -42,6 +42,28 @@ router.get("/lab/itemname/:lab/:itemname", async(req, res)=>{
     res.json(stock)
 })
 
+//Get stock for date range 
+
+router.get("/:startdate/:enddate", async(req, res)=>{
+    const startdate = new Date(req.params.startdate)
+    const enddate = new Date(req.params.enddate)
+
+    const stock  = await Stocks.findAll({
+        where: {
+            
+                createdAt: {
+                    [Op.between]: [startdate, enddate]
+                }
+                
+            }
+        }
+    )
+    if (stock.length ===0){
+        res.json("No records found.")
+    }else{
+        res.json(stock)
+    }
+})
 router.post('/', async (req, res)=>{
     const stock= req.body
     await Stocks.create(stock).then(()=>{
@@ -67,3 +89,36 @@ router.put('/:lab/:itemname', async(req, res)=>{
     })
 })
 module.exports = router 
+
+
+//Update stock
+
+router.put("/increment/:lab/:itemname", async(req, res)=>{
+    //Minus from available 
+    await Stocks.increment(req.body.status, {
+        by: req.body.qtyreceived
+    , where: {
+        lab: req.params.lab, 
+        itemname: req.params.itemname
+    }}).then(()=>{
+        res.json(req.body)
+        
+    }).catch((err)=>{
+        res.json(err)
+    })
+})
+
+router.put("/decrement/:lab/:itemname", async(req, res)=>{
+    //Minus from available 
+    await Stocks.decrement(req.body.status, {
+        by: req.body.qtyreceived
+    , where: {
+        lab: req.params.lab, 
+        itemname: req.params.itemname
+    }}).then(()=>{
+        res.json(req.body)
+        
+    }).catch((err)=>{
+        res.json(err)
+    })
+})

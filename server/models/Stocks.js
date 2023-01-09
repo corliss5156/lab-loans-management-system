@@ -9,11 +9,14 @@ module.exports = (sequelize, DataTypes) =>{
                 key: "lab"
             }
         }, 
-        
         itemname: {
-            type: DataTypes.STRING, 
-            primaryKey: true
-            
+            type: DataTypes.STRING,
+            foreignKey: true, 
+            primaryKey: true,
+            references: {
+                model: "Items", 
+                key: "name"
+            }
         },
         Available: {
             type: DataTypes.INTEGER
@@ -26,6 +29,7 @@ module.exports = (sequelize, DataTypes) =>{
         }
         
     })
+    
     
     return Stocks
 }

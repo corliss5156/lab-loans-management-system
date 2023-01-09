@@ -1,20 +1,21 @@
 
-import {forwardRef, useEffect, useState, useImperativeHandle} from 'react';
+import {forwardRef, useEffect, useState, useImperativeHandle, useContext} from 'react';
 import '../style.css'
 
 
-
 //Subcomponents 
-import Hover from "../../modals/Hover";
 import ExpandedTable from "./ExpandedTable";
 import StockDiv from "./StockDiv";
 //Bootstrap 
 import Table from "react-bootstrap/Table"
-import { FiEdit } from "react-icons/fi";
-import {BiMessageSquareDetail} from "react-icons/bi"
+import Tippy from '@tippyjs/react'
+import 'tippy.js/dist/tippy.css';
+import { AiOutlineEdit } from 'react-icons/ai';
+import { IconContext } from "react-icons";
 //Backend 
 import axios from 'axios'; 
 import ENV from '../../../config.js'; 
+import { AuthContext } from "../../../helpers/AuthContext";
 import Staffedititem from '../../modals/components/Staffedititem';
 const API_HOST = ENV.api_host;
 
@@ -22,7 +23,9 @@ const API_HOST = ENV.api_host;
 const InventoryTable = forwardRef(({selected, itemSubmit, editItem, handleEditItemSubmit}, ref)=>{
   const [selectChange, setSelectChange] = useState(false)
   const [stocklevels, setStocklevels] = useState([])
+  const [labs, setLabs] = useState([])
   
+  const auth= useContext(AuthContext)
    
   useImperativeHandle(
     ref,
@@ -45,27 +48,22 @@ const InventoryTable = forwardRef(({selected, itemSubmit, editItem, handleEditIt
         return value.lab === selected
       })
         setStocklevels(stocklevelstemp)
+
       }
     })
-
-    
+    //Select permitted labs 
+    const user = auth.authState.user
+    axios.get(API_HOST + "/staff/" + user).then((response)=>{
+      setLabs(response.data[0].labs.split(","))
+    })
     
   }, [selectChange, itemSubmit, editItem])
 
-  const showHover = (e)=>{
-    
-    if(e.target.nextSibling.nodeName==="DIV"){
-      e.target.nextSibling.style.display = "block"
-    }
-    setTimeout(()=>{
-      e.target.nextSibling.style.display = "none"
-    }, 1000)
-  }
   
   const expand = (e) =>{
     
     const id = e.target.parentNode.parentNode.id 
-    console.log(id)
+    
     if (e.target.classList.contains('rotate')){
         e.target.classList.remove('rotate')
         const element = document.getElementById(id + "-expanded")
@@ -79,10 +77,8 @@ const InventoryTable = forwardRef(({selected, itemSubmit, editItem, handleEditIt
       
   }
   const showEditModal = (e)=>{
-    const itemname = e.target.parentElement.parentElement.firstChild.nextSibling.textContent.toString().trim()
-    const labname = e.target.parentElement.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling.textContent.toString().trim()
-    console.log(labname)
-    const modal = document.getElementById('modal-edit-stock-'+itemname + '-' + labname)
+    
+    const modal = document.getElementById('modal-edit-stock-'+e.target.name)
     modal.style.display = 'block'
   }
   return (
@@ -106,7 +102,7 @@ const InventoryTable = forwardRef(({selected, itemSubmit, editItem, handleEditIt
       </thead>
       <tbody>
         {stocklevels.map((stock, key)=>{
-            
+          
             return(
               <>
               <tr id = {stock.itemname+"-"+stock.lab} key = {stock.itemname+"-"+stock.lab}> 
@@ -118,80 +114,36 @@ const InventoryTable = forwardRef(({selected, itemSubmit, editItem, handleEditIt
                 <td>{stock.Available}</td>
                 <td>{stock.OnLoan}</td>
                 <td>{stock.LabUse}</td>
-                <td className = "action-td"> <FiEdit className = "cursor" onClick = {showEditModal} onMouseEnter= {showHover} /> 
-                      <Hover text= "Edit item"/> 
-                     
-                
+                <td>
+                  
+
+                  {labs.includes(stock.lab)? <Tippy content="Edit Stock" >
+                    <button name = {stock.itemname+"-"+stock.lab} onClick = {showEditModal} className='empty-button' ><AiOutlineEdit pointerEvents="none"/></button>
+                  </Tippy>: <Tippy content="Unable to edit stock" >
+                    <button name = {stock.itemname+"-"+stock.lab} className='empty-button' >
+
+                      <IconContext.Provider value={{ color: "grey", className: "global-class-name" }}>
+                        <div>
+                          <AiOutlineEdit/>
+                        </div>
+                      </IconContext.Provider>
+                    </button>
+                  </Tippy>
+
+                  }
                 </td>
 
               </tr> 
 
-              <ExpandedTable key = {stock.itemname+ "-" + stock.lab + "-expanded"} stock = {stock}/>
-              <Staffedititem lab = {stock.lab} handleEditItemSubmit = {handleEditItemSubmit} itemname= {stock.itemname} /> 
+              <ExpandedTable editItem= {editItem} key = {stock.itemname+ "-" + stock.lab + "-expanded"} stock = {stock}/>
+              <Staffedititem  editItem = {editItem} handleEditItemSubmit = {handleEditItemSubmit} stock = {stock} /> 
               </>
             )
           
         })}
       </tbody>
-      {/* <tbody>
-        
-        {inventory.map((item, key)=>{
-          if(selected !== ""){
-            if(item.lab === selected){
-              return(
-                <>
-    <tr id = {item.name} key = {item.name}>
-                  <td > <div onClick  = {expand} className = 'arrow'> </div></td>
-                  <td> {item.name} </td>
-                  <td> {item.description} </td> 
-                  <td className = "stocktd" colSpan={3}> <StockDiv name = {item.name + item.lab}available = {item.Available} onloan = {item.OnLoan} labuse = {item.LabUse} /></td>
-                  <td> {item.lab}</td>
-                  <td> {item.Available + item.OnLoan + item.LabUse} </td>
-                  <td> {item.Available} </td> 
-                  <td> {item.OnLoan}</td>
-                  <td> {item.LabUse} </td>
-                  <td > <FiEdit /> </td>
-                </tr>
-                <ExpandedTable key = {item.name + "-expanded"} item = {item}/>
-    
-                </>
-                
-              
-                
-              )
-            }
-          }
-          else {
-            return(
-              <>
-  <tr id = {item.name + item.lab} key = {item.name}>
-                <td > <div onClick  = {expand} className = 'arrow'> </div></td>
-                <td> {item.name} </td>
-                <td> {item.description} </td> 
-                <td className = "stocktd" colSpan={3}> <StockDiv name = {item.name + item.lab} available = {item.Available} onloan = {item.OnLoan} labuse = {item.LabUse} /></td>
-                <td> {item.lab}</td>
-                <td> {item.Available + item.OnLoan + item.LabUse} </td>
-                <td> {item.Available} </td> 
-                <td> {item.OnLoan}</td>
-                <td> {item.LabUse} </td>
-                <td > <FiEdit /> </td>
-              </tr>
-              <ExpandedTable key = {item.name + item.lab + "-expanded"} item = {item}/>
-  
-              </>
-              
-            
-              
-            )
-          }
-           
-          
-        })}
-        
-      </tbody>  */}
-      <tbody> 
-      </tbody> 
     </Table>
+    
     </div>
   )
 })

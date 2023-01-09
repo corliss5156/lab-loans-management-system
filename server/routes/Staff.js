@@ -36,7 +36,8 @@ router.post("/login", async (req, res) => {
             const accessToken = sign({username: staff.email, id: staff.id}, "secret")
             res.json({
                 accessToken:accessToken, 
-                user: staff.email
+                user: staff.email, 
+                userType: "Staff"
             });
         }
       
@@ -51,4 +52,32 @@ router.get("/auth", validateToken, (req, res) => {
     
 });
 
+router.get("/", async (req, res)=>{
+    const staff = await Staffs.findAll()
+    res.json(staff)
+})
+
+router.get("/:username", async(req, res)=>{
+    const staff = await Staffs.findAll({
+        where: {
+            email: req.params.username
+        }
+    })
+    res.json(staff)
+})
+router.put("/labs/:staff", async(req, res)=>{
+    const labs = req.body.labs
+    await Staffs.update({
+        labs: labs
+    }, {
+        where:{
+            email: req.params.staff
+        }
+    })
+    res.json({
+        email: req.params.staff, 
+        labs: labs
+    })
+    
+})
 module.exports = router

@@ -1,44 +1,57 @@
-import React from 'react'
+import React, { useContext }  from 'react'
+
+//Bootstrap
 import Button from 'react-bootstrap/esm/Button'
 import Table from 'react-bootstrap/Table'
 import Form from 'react-bootstrap/Form'
 import {FiAlertCircle} from 'react-icons/fi'
+
+//Backend
 import axios from 'axios'
 import ENV from '../../../../config.js'; 
+import { AuthContext } from '../../../../helpers/AuthContext';
 const API_HOST = ENV.api_host;
 
 
 export default function Review({loan, loanItems, handleSetLoanSubmit}) {
   
-  let onloan = true 
+  const auth = useContext(AuthContext)
   const date = new Date()
+  const month = date.getMonth()+1
+
   const submit = (event) =>{
     event.preventDefault()
-    //Upload to loanitems table 
+    console.log(loan.lab)
+    
+    // Upload to loanitems table 
     axios.post(API_HOST + "/loanrequest", {
       formreference: loan.formreference, 
       borrowername: loan.borrowername, 
-      borroweremail: loan.borroweremail, 
-      borrowdate: date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate(), 
+      borroweremail: auth.authState.user, 
+      borrowdate: date.getFullYear() + "-" + month + "-" + date.getDate(), 
       requestreason: loan.loanreason, 
       supervisoremail: loan.supervisoremail, 
       phonenumber: loan.phonenumber, 
-      status: onloan? "On loan" : "Partial", 
-      location: "Hardware Lab 2", 
+      status: "To Be Approved",
+      lab: loan.lab, 
       groupmembers: loan.groupmembers.toString()
     }).then((response)=>{
       console.log(response)
+      for (const item in loanItems) {
+        console.log(item)
+        axios.post(API_HOST + "/loanitem", {
+          formreference: loan.formreference, 
+          item: item,   
+          lab: loan.lab,
+          qtyreceived: loanItems[item]['qtyreceived']? loanItems[item]['qtyreceived'] : 0  ,
+          qtytoreceive: loanItems[item]['qtytoreceive']
+        }).then((response)=>{
+          console.log(response)
+        })
+      }
     })
-    for (const item in loanItems) {
-      axios.post(API_HOST + "/loanitem", {
-        formreference: loan.formreference, 
-        item: item,   
-        qtyreceived: loanItems[item]['qtyreceived']? loanItems[item]['qtyreceived'] : 0  ,
-        qtytoreceive: loanItems[item]['qtytoreceive']
-      }).then((response)=>{
-        
-      })
-    }
+
+    
 
     const modal = document.getElementById('modal')
     modal.style.display = 'none'
@@ -49,7 +62,9 @@ export default function Review({loan, loanItems, handleSetLoanSubmit}) {
       <div className='modal-sub-page' id = 'loandetail-sub-page'>
         
       <Form> 
+      <fieldset disabled>
         <div className = 'flex-container'> 
+        
           <Form.Group className = 'md md-right'> 
             <Form.Label> Username </Form.Label>
             <Form.Control disabled placeholder = {loan.borrowername ==='' ? "Enter leader's username": loan.borrowername}></Form.Control>
@@ -61,8 +76,12 @@ export default function Review({loan, loanItems, handleSetLoanSubmit}) {
         </div>
         <div className = 'flex-container'> 
           <Form.Group className = 'md md-right'> 
-            <Form.Label> Email</Form.Label>
-            <Form.Control disabled type = 'email' placeholder = {loan.borroweremail === ''? "Enter your email": loan.borroweremail}></Form.Control>
+          <Form.Label> Lab </Form.Label> 
+          <Form.Select disabled > 
+            
+            <option>{loan.lab ===''? "Lab": loan.lab}</option>
+            
+          </Form.Select>
           </Form.Group>
           <Form.Group className = 'md md-left'> 
             <Form.Label> Phone Number</Form.Label>
@@ -91,6 +110,7 @@ export default function Review({loan, loanItems, handleSetLoanSubmit}) {
             </Form.Select>
           </div>
         </div>
+        
         <div id = 'groupmembers'> 
           <div> 
           <Form.Group> 
@@ -108,7 +128,7 @@ export default function Review({loan, loanItems, handleSetLoanSubmit}) {
             )
           }) : null}
         </div>
-
+        </fieldset> 
         
       </Form>
       </div>
@@ -126,7 +146,7 @@ export default function Review({loan, loanItems, handleSetLoanSubmit}) {
             {Object.keys(loanItems).length > 1 ? 
             Object.keys(loanItems).map((key)=>{
               if(parseInt(loanItems[key]['qtytoreceive']) !== parseInt(loanItems[key]['qtyreceived'])){
-                onloan = false
+                
                 return(
                   <tr >
                     <td> <FiAlertCircle style = {{color: 'red'}}/></td>

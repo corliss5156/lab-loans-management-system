@@ -1,5 +1,8 @@
-import React, {createContext, useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {Navigate} from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
+
+//Bootstrap
 import { AuthContext } from '../../../helpers/AuthContext'
 import Navbar from '../../Navigation/components/Navigation';
 import LoanTable from './LoanTable'
@@ -8,8 +11,7 @@ import Button from 'react-bootstrap/esm/Button';
 
 import Studentcreateloan from '../../modals/components/Studentcreateloan';
 
-export const modalContext  = createContext()
-function Student() {
+export default function Student() {
   
   const auth = useContext(AuthContext)
   const [loanSubmit, setLoanSubmit] = useState(true)
@@ -21,13 +23,24 @@ function Student() {
   
   useEffect(()=>{
    
-    
+    console.log(auth)
   }, [loanSubmit])
+
+  const errornotif = (errormsg)=>{
+    toast.error(errormsg, {
+        position: "bottom-center", 
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        progress: undefined, 
+        theme: "light"
+    })
+  }
   const handleSetLoanSubmit = () => {
     setLoanSubmit(!loanSubmit)
   }
   
-  if (auth.authState.status ===false) {
+  if (auth.authState.status ===false || auth.authState.userType === "staff") {
     return <Navigate replace to="/student/login" />;
   } else {
     return (
@@ -36,7 +49,7 @@ function Student() {
         <div id = "createloan">
          <Button onClick = {createloan}>Create loan</Button>
          
-         <Studentcreateloan loanSubmit = {loanSubmit} handleSetLoanSubmit = {handleSetLoanSubmit}/>
+         <Studentcreateloan errornotif = {errornotif} loanSubmit = {loanSubmit} handleSetLoanSubmit = {handleSetLoanSubmit}/>
          
         </div>
         
@@ -44,10 +57,13 @@ function Student() {
         
           <LoanTable loanSubmit = {loanSubmit}/>
         </div>
+        <ToastContainer position="bottom-center"
+            autoClose={5000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick/>
       </div>
     );
   }
   
 }
-
-export default Student

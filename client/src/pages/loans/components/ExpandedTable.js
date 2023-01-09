@@ -1,11 +1,20 @@
-import axios from 'axios'
+
 import React, { useEffect, useState } from 'react'
-import ENV from '../../../config.js'; 
+
+//Bootstrap 
+import Table from 'react-bootstrap/Table'
 import logo from '../../../assets/svg/No_report.svg';
+
+//Backend
+import axios from 'axios'
+import ENV from '../../../config.js'; 
+import { AiOutlineAccountBook } from 'react-icons/ai';
+import Staffeditreport from '../../modals/components/Staffeditreport';
 const API_HOST = ENV.api_host;
 
 export default function ExpandedTable({loan}) {
     const [items, setitems] = useState([])
+    const [reports, setReports] =useState([])
     useEffect(()=>{
         const url = API_HOST + "/loanitem/" + loan.formreference
         if(items.length === 0){
@@ -19,8 +28,15 @@ export default function ExpandedTable({loan}) {
         })
         }
         
+
+        //Get reports belonging to a loan
+        axios.get(API_HOST+"/report/" + loan.formreference).then((response)=>{
+           
+            setReports(response.data)
+        })
         
     }, [])
+    
   return (
     <tr id = {loan.formreference + '-expanded'}className='expanded'>
         <td> </td>
@@ -53,10 +69,31 @@ export default function ExpandedTable({loan}) {
             </div>
             <div className="md">
                 <h3> Report </h3>
-                <div className='no-reports'> 
-                    <img src = {logo}/>
-                    <p> No reports</p>
-                </div>
+                <Table hover> 
+                    <thead>
+                        <tr> 
+                        <th> Item </th> 
+                        <th> Quantity Requested </th>
+                        <th> Status </th>
+                        </tr>
+                    </thead> 
+                
+                <tbody id = "report-tablebody-expanded"> 
+
+                    {reports.map((report)=>{
+                        return(
+
+                            <tr id = {report.id} key = {report.id} > 
+                                <td>{report.item}</td> 
+                                <td>{report.qty}</td>
+                                <td>{report.status}</td>
+
+                            </tr>
+                            
+                        )
+                    })}
+                </tbody>
+                </Table>
                 
             </div>
         </div>

@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react'
 import '../style.css'
-import axios from 'axios'
+
 import Loandetails from '../subcomponents/studentcreateloan/Loandetails'; 
 import Items from '../subcomponents/studentcreateloan/Items';
 import Review from '../subcomponents/studentcreateloan/Review';
 
 
 import ENV from '../../../config.js'; 
+import axios from 'axios'
 const API_HOST = ENV.api_host;
 
-export default function Studentcreateloan({ loanSubmit, handleSetLoanSubmit}) {
+
+export default function Studentcreateloan({ errornotif, loanSubmit, handleSetLoanSubmit}) {
     const [page, setPage] = useState('1')
     const [loan, setLoan] = useState({
         'formreference': '',
@@ -20,7 +22,7 @@ export default function Studentcreateloan({ loanSubmit, handleSetLoanSubmit}) {
         'supervisoremail': '', 
         'phonenumber': '',
         'status': '', 
-        'location': '', 
+        'lab': '', 
         'groupmembers': '', 
         'semester': '', 
         'groupnumber': [], 
@@ -49,11 +51,12 @@ export default function Studentcreateloan({ loanSubmit, handleSetLoanSubmit}) {
    const setLoanitems = (loanreason) =>{
     const url = API_HOST + "/loanformtemplate/" + loanreason
         axios.get(url).then((response)=>{
+          console.log(response.data)
             const items = response.data
             const setofitems = {}
             const setofLoanItems = {}
             const mainitems = items.filter((item)=>{
-                return item.mainitem === ''
+                return (item.mainitem === '' || item.mainitem ===null)
               })
               const subitems = items.filter((item)=>{
                 return item.mainitem !== ''
@@ -84,6 +87,7 @@ export default function Studentcreateloan({ loanSubmit, handleSetLoanSubmit}) {
                   'qtyreceived': null
                 }
               })
+              console.log(setofLoanItems)
               setItems(items => ({
                 ...items, 
                 ...setofitems

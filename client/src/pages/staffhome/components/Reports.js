@@ -2,6 +2,8 @@ import React, {useState, useEffect}from 'react'
 import '../style.css'
 import approvedlogo from '../../../assets/svg/Approved_Report.svg'; 
 import submittedlogo from '../../../assets/svg/Submitted_Report.svg'
+//Backend
+
 import axios from 'axios';
 import ENV from '../../../config.js'
 const API_HOST = ENV.api_host
@@ -21,7 +23,7 @@ export default function Reports() {
         
     })  
   return (
-    <div id = "report-table">
+    <div id = "staff-table">
         <div className = "header"> Reports </div>
         <div id = 'flex-container'>
             <div className = "report-div approved md">

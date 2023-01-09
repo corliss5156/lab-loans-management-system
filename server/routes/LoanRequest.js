@@ -3,6 +3,8 @@ const express = require('express')
 const router = express.Router()
 const bcrypt = require("bcrypt")
 const {sign} = require('jsonwebtoken')
+
+const { Op } = require("sequelize");
 const validateToken = require('../middlewares/AuthMiddleware')
 
 const {LoanRequests} = require('../models')
@@ -16,6 +18,29 @@ router.get('/:email/:formreference', async(req, res)=>{
 
 })
 
+//Get loan between time frame
+router.get('/date/:startdate/:enddate', async(req, res)=>{
+    const startdate = new Date(req.params.startdate)
+    const enddate = new Date(req.params.enddate)
+
+    const loan  = await LoanRequests.findAll({
+        where: {
+            
+                createdAt: {
+                    [Op.between]: [startdate, enddate]
+                }
+                
+            }
+        }
+    )
+    if (loan.length ===0){
+        res.json("No records found.")
+    }else{
+        res.json(loan)
+    }
+    
+
+})
 
 
 //Get all loans for student 
@@ -61,6 +86,30 @@ router.put('/status/:formreference', async(req, res)=>{
         "formreference": req.params.formreference, 
         "status": newstatus
     })
+})
+  
+router.put('/returndate/:formreference', async(req, res)=>{
+    const newreturndate = req.body.returndate
+    await LoanRequests.update({returndate: newreturndate}, {where: {
+        formreference: req.params.formreference
+    }})
+    res.json({
+        "formreference": req.params.formreference, 
+        "returndate": newreturndate
+    })
+})
+
+//Update remark 
+
+router.put("/remark/:formreference", async(req, res)=>{
+    const loanrequest = await LoanRequests.update({
+        remark: req.body.remark
+    }, {
+        where: {
+            formreference: req.params.formreference
+        }
+    })
+    res.json(loanrequest)
 })
   
 module.exports = router

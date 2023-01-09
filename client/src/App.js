@@ -8,11 +8,11 @@ import SignupStudent from './pages/signupstudent/components/SignupStudent';
 import SignupStaff from './pages/signupstaff/components/SignUpStaff';
 import Student from './pages/studenthome/components/Student';
 import Staff from './pages/staffhome/components/Staff';
-import Error from './pages/error/components/Error';
 import Loan from './pages/loans/components/Loan';
 import Inventory from './pages/inventory/components/Inventory';
 import Report from './pages/report/components/Report';
 import Forgotpassword from './pages/forgotpassword/components/Forgotpassword';
+import Home from './pages/home/components/Home'
 import axios from 'axios'; 
 import { useEffect, useState } from 'react';
 import { AuthContext } from './helpers/AuthContext';
@@ -24,10 +24,12 @@ const API_HOST = ENV.api_host;
 function App() {
   const [authState, setAuthState] = useState({
     user: "", 
-    status: false
+    status: false, 
+    userType: "student"
   });
 
   useEffect(() => {
+    console.log(authState)
     const url = API_HOST + `/student/auth`
     axios.get(url, {
         headers: {
@@ -39,6 +41,7 @@ function App() {
         if (response.data.error) {
           setAuthState({...authState, status: false});
         } else {
+          console.log(response)
           setAuthState({
             user: response.data.username, 
             status: true
@@ -53,6 +56,7 @@ function App() {
 
         <Router> 
           <Routes> 
+            <Route path = "/" element = {<Home/>} />
             <Route path = "/student/login" element = {<LoginStudent />} />
             <Route path = "/student/signup" element = {<SignupStudent />}  />
             <Route path = "/staff/login" element = {<LoginStaff/>} />
@@ -63,7 +67,7 @@ function App() {
             <Route path = "/staff/inventory" element = {<Inventory />} />
             <Route path = "/staff/loan" element = {<Loan />} />
             <Route path = "/staff/report" element = {<Report />} />
-            <Route path = "*" element = {<Error />} />
+            
           </Routes>
         </Router> 
       </AuthContext.Provider>

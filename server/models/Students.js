@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) =>{
     const Students = sequelize.define("Students", {
         email:{
             type: DataTypes.STRING, 
-            allowNull: false, 
+            primarykey: true, 
+            foreignKey: true, 
             validate: {
                 isEmail: true
             }

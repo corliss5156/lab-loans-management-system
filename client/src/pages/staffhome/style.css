@@ -53,6 +53,24 @@
 
 
 #staff-table {
-    margin: 4vh 5vw; 
+    margin: 2vh 5vw; 
     background-color: white;
 }
+
+
+
+.empty-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+
+
+.empty-button span {
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    width: 1px;
+  }
+  

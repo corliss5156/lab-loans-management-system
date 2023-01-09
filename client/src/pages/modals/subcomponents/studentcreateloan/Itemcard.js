@@ -8,6 +8,7 @@ export default function Itemcard({itemname, imgpath, description, subitems, qtyr
         image_path = require('../../../../assets/images/' + itemname + '.jpg')
     } catch(err) {
         image_path = require('../../../../assets/images/Robot Car.jpg')
+        
         console.log("err")
     }
     

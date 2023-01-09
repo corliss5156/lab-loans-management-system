@@ -54,3 +54,24 @@ p{
 .no-reports {
     text-align: center;
 }
+
+#report-tablebody-expanded tr td{
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.empty-button{
+    z-index: 1;
+}
+
+.empty-button svg {
+    z-index: 0;;
+}
+
+.table-button{
+    text-align: right;
+    margin: 4vh 5vw;
+}

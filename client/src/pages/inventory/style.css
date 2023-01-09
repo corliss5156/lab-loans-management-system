@@ -113,4 +113,18 @@ custom-select {
 
 .float-right{
     float:right; 
+    margin-left: 2vw;
 }
+
+.secondary {
+    background-color: #338a4b;
+    border-color: #006400;
+}
+
+.secondary:hover {
+    background-color: #006400;
+}
+
+
+
+  

@@ -16,10 +16,19 @@ input {
 }
 /*Table*/ 
 
-table{
-  height: 1px; 
+.itemtable {
+  counter-reset: rowNumber;
 }
 
+.itemtable tr:not(:first-child) {
+  counter-increment: rowNumber;
+}
+
+.itemtable tr td:first-child::before {
+  content: counter(rowNumber);
+  min-width: 1em;
+  margin-right: 0.5em;
+}
 .cursor {
   cursor: pointer;
 }
@@ -36,6 +45,7 @@ table{
     height: 100%; 
     overflow: auto; 
     background-color: rgba(0,0,0,.5);
+    
 }
 .modal-header h2 {
     font-size: 24px;
@@ -48,6 +58,7 @@ table{
     padding-right: 2.5%;
     width: 100%;
     max-width: 125rem;
+    min-height: 80vh;
     overflow: hidden;
     border-radius: 2px;
     -webkit-animation-name: animatetop;
@@ -406,4 +417,65 @@ select {
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-bottom: 5px solid #555;
+}
+
+
+
+/* Image upload  */
+
+.image-area label input{
+  display: none;
+
+}
+
+.image-area label{
+  width: 100%; 
+  height: 50vh; 
+  padding: 15px; 
+  border: 3px dashed #ccc; 
+  color: #ccc; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+
+.image-area label:hover {
+  background-color: rgb(204,204,204,0.3);
+  opacity: 0.3;
+}
+
+.image-area span{
+  max-width: 100%;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.image-area img{
+  max-width: 80%;
+  max-height: 80%;
+
+}
+.image-area svg{
+  font-size: 72px; 
+}
+
+
+/* Error */
+.error{
+  color: var(--errorred);
+}
+/* Black placeholder */
+.blackPlaceholder::placeholder{
+  color:black;
+}
+
+.modal-sub-page pre {
+  background-color: #333333;
+  color: white;
 }

@@ -1,13 +1,18 @@
 import React, {useContext, useEffect, useRef, useState} from 'react'
 import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../../../helpers/AuthContext';
+import { ToastContainer, toast } from 'react-toastify';
+//Bootstrap
 import Button from 'react-bootstrap/esm/Button';
 import NavigationStaff from '../../Navigation/components/NavigationStaff'
 import InventoryTable from './InventoryTable';
 import Staffcreateitem from '../../modals/components/Staffcreateitem';
-import ENV from '../../../config.js'; 
-import {MdArrowDropDown} from 'react-icons/md'
+import Staffcsvinventory from '../../modals/components/Staffcsvinventory';
+
+//Backend
 import axios from 'axios';
+import ENV from '../../../config.js'; 
+import { AuthContext } from '../../../helpers/AuthContext';
+
 
 const API_HOST = ENV.api_host
 function Inventory() {
@@ -18,15 +23,37 @@ function Inventory() {
   const [editItem, setEditItem] = useState(false)
 
   useEffect(()=>{
+    console.log("rerender")
     const url = API_HOST + "/lab"
     axios.get(url).then((response)=>{
       setLabs(response.data)
     })
-    console.log(itemSubmit)
   },[selected, itemSubmit, editItem])
   const handleEditItemSubmit = ()=>{
     setEditItem(!editItem)
   }
+  const errornotif = (errormsg)=>{
+    toast.error(errormsg, {
+        position: "bottom-center", 
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        progress: undefined, 
+        theme: "light"
+    })
+}
+const successnotif = (successmsg) =>{
+  console.log("SEnd success")
+  toast.success(successmsg,{
+    position: "bottom-center", 
+    autoClose: 5000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    progress: undefined, 
+    theme: "light"
+})
+
+}
   const InventoryTableref = useRef()
   const selectChange = (e) =>{
     if (e.target.value !== "All labs"){
@@ -41,6 +68,13 @@ function Inventory() {
   const createItem = ()=>{
     const modal = document.getElementById('modal-create-item')
     modal.style.display = 'block'
+  }
+  const exportToCSV = ()=>{
+    
+    const modal = document.getElementById('modal-inventory-csv')
+    modal.style.display = 'block'
+
+  
   }
   const handleSetItemSubmit = ()=>{
     setItemSubmit(!itemSubmit)
@@ -69,15 +103,22 @@ function Inventory() {
             
           </label>
           <Button className = 'float-right' onClick = {createItem}> Create Item </Button>
+          <Button  className = 'float-right secondary' onClick = {exportToCSV} >Export to CSV </Button>
           </div>
           
         
         </div>
-        <Staffcreateitem handleSetItemSubmit={handleSetItemSubmit}/> 
+        <Staffcreateitem successnotif = {successnotif} errornotif = {errornotif} handleSetItemSubmit={handleSetItemSubmit}/> 
+        <Staffcsvinventory errornotif = {errornotif} />
         
          <div id = "inventory-table"> 
           <InventoryTable editItem = {editItem} handleEditItemSubmit = {handleEditItemSubmit} itemSubmit = {itemSubmit} ref = {InventoryTableref} selected = {selected}/>
         </div>
+        <ToastContainer position="bottom-center"
+            autoClose={5000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick/>
       </div> 
 
     

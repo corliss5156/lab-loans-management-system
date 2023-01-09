@@ -1,12 +1,27 @@
-import Table from "react-bootstrap/Table"
+
 import {useEffect, useState, useContext} from 'react';
+
+
+//Subcomponents
+import ExpandedTable from "./ExpandedTable";
+import Studentshowloan from "../../modals/components/Studentshowloan";
+import Studentcreatereport from '../../modals/components/Studentcreatereport';
+
+
+//CSS
+import Tippy from '@tippyjs/react'
+import 'tippy.js/dist/tippy.css';
+import Table from "react-bootstrap/Table"
+import { AiOutlineEdit } from 'react-icons/ai';
+import {HiOutlineDocumentText} from 'react-icons/hi';
+
+
+//Backend
+import ENV from '../../../config.js'; 
+import '../style.css'
 import { AuthContext } from '../../../helpers/AuthContext'
 import axios from 'axios'; 
-import ExpandedTable from "./ExpandedTable";
-import ENV from '../../../config.js'; 
-import { FiEdit } from "react-icons/fi";
-import '../style.css'
-import Studentshowloan from "../../modals/components/Studentshowloan";
+
 const API_HOST = ENV.api_host;
 
 
@@ -14,6 +29,7 @@ function LoanTable(props){
 
     
   const [loans, setLoans] = useState([])
+  const [report, setReport] = useState(false)
   const auth = useContext(AuthContext)
 
   useEffect(()=> {
@@ -21,7 +37,11 @@ function LoanTable(props){
     axios.get(url).then((response)=>{
         setLoans(response.data)
     })
-  }, [props.loanSubmit])
+  }, [props.loanSubmit, report])
+  
+  const handleReport = ()=>{
+    setReport(!report)
+  }
   
 
   const expand = (e) =>{
@@ -39,11 +59,14 @@ function LoanTable(props){
       }  
       
   }
+  const createReport = (e)=>{
+    const modal = document.getElementById("modal-create-report-"+ e.target.name)
+    modal.style.display = "block"
+  }
   
   const showLoan = (e) => {
-      const formreference = e.target.parentElement.parentElement.firstChild.nextSibling.textContent.toString().trim()
-      
-      const modal = document.getElementById('modal-show-loan-'+ formreference) 
+     
+      const modal = document.getElementById('modal-show-loan-'+ e.target.name) 
       modal.style.display = 'block'
   }
   return (
@@ -73,12 +96,20 @@ function LoanTable(props){
               <td> {loan.formreference} </td>
               <td> {loan.borrowdate}</td>
               <td> {loan.returndate} </td> 
-              <td> {loan.location}</td>
+              <td> {loan.lab}</td>
               <td> {loan.status} </td>
-              <td > <FiEdit className = 'cursor' onClick = {showLoan} /> </td>
+              <td > <Tippy content="Loan Details" >
+                    <button name = {loan.formreference} onClick = {showLoan} className='empty-button' ><AiOutlineEdit pointerEvents="none"/></button>
+                   
+                  </Tippy>
+                  <Tippy content = 'Create Report'>
+                  <button name = {loan.formreference} onClick = {createReport} className = 'empty-button'><HiOutlineDocumentText pointerEvents="none"/></button>
+                  </Tippy>
+                  </td>
             </tr>
             <ExpandedTable key = {loan.formreference + "-expanded"} loan = {loan} />
             <Studentshowloan formreference={loan.formreference}/> 
+            <Studentcreatereport handleReport = {handleReport} loan = {loan}formreference={loan.formreference}/> 
             
             </>
             

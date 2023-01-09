@@ -25,9 +25,14 @@ const itemRouter = require("./routes/Item")
 app.use("/item", itemRouter)
 const loanitemRouter = require("./routes/LoanItem")
 app.use("/loanitem", loanitemRouter)
+const activityRouter = require("./routes/Activity")
+app.use("/activity", activityRouter)
 
 const stockRouter = require("./routes/Stock")
 app.use("/stock", stockRouter)
+
+const imageRouter = require("./routes/Image")
+app.use("/image", imageRouter)
 
 
 // const inventorystockRouter = require("./routes/Inventorystock")

@@ -22,10 +22,28 @@ router.post('/', async (req, res)=>{
     await Labs.create(lab).then(()=>{
         res.json(lab)
     }).catch((err)=>{
-        res.json(err)
+        res.json(err.message)
     })
     
 })
 
 
+//Update lab
+
+router.put("/", async(req, res)=>{
+    const lab = req.body 
+    const result = await Labs.update({
+        staff: lab.staff
+    }, {
+        where: {
+            lab: lab.lab
+        }
+    }).catch((err)=>{
+        res.json(err)
+    }) 
+    res.json({
+        "lab": lab.lab, 
+        "staff": lab.staff
+    })
+})
 module.exports = router 

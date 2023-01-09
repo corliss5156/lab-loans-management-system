@@ -1,15 +1,20 @@
-import Table from "react-bootstrap/Table"
+
 import {useEffect, useState} from 'react';
-import axios from 'axios'; 
-import ExpandedTable from "./ExpandedTable";
-import ENV from '../../../config.js'; 
-import { FiEdit } from "react-icons/fi";
+//Bootstrap 
 import '../style.css'
+import Tippy from '@tippyjs/react'
+import 'tippy.js/dist/tippy.css';
+import Table from "react-bootstrap/Table"
+import ExpandedTable from "./ExpandedTable";
 import Staffeditloan from "../../modals/components/Staffeditloan";
+import { AiOutlineEdit } from 'react-icons/ai';
+//Backend
+import axios from 'axios'; 
+import ENV from '../../../config.js'; 
 const API_HOST = ENV.api_host;
 
 
-function LoanTable(){
+function LoanTable({errornotif}){
     
 
   const [loans, setLoans] = useState([])
@@ -42,10 +47,7 @@ function LoanTable(){
   }
 
   const showModal =(e) =>{
-    const formreference = e.target.parentElement.parentElement.firstChild.nextSibling.textContent.toString().trim()
-    
-    const id = 'modal-edit-loan-'+formreference
-  
+    const id = 'modal-edit-loan-'+e.target.name
     const modal = document.getElementById(id)
     modal.style.display = 'block'
   }
@@ -79,12 +81,19 @@ function LoanTable(){
               <td> {loan.borroweremail}</td>
               <td> {loan.borrowdate}</td>
               <td> {loan.returndate} </td> 
-              <td> {loan.location}</td>
+              <td> {loan.lab}</td>
               <td> {loan.status} </td>
-              <td > <FiEdit className = 'cursor' onClick = {showModal}/> </td>
+              <td > 
+                
+                  <Tippy content="Edit Loan">
+                    <button name = {loan.formreference} onClick = {showModal} className='empty-button' ><AiOutlineEdit pointerEvents="none"/></button>
+                  </Tippy>
+                  
+              
+                </td>
             </tr>
             <ExpandedTable  key = {loan.formreference + "-expanded"} loan = {loan} />
-            <Staffeditloan handleUpdate = {handleUpdate} email = {loan.borroweremail} formreference = {loan.formreference}/>
+            <Staffeditloan errornotif={errornotif} handleUpdate = {handleUpdate} email = {loan.borroweremail} formreference = {loan.formreference}/>
             </>
             
           

@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useImperativeHandle, forwardRef} from 'react'
-import Select from 'react-select'
+import {useForm} from 'react-hook-form'
 
 
 
 //React bootstrap
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/esm/Button';
-
+import {AiOutlineCloudUpload} from 'react-icons/ai'
 //Backend
 import axios from 'axios'
 import ENV from '../../../../config.js'; 
@@ -17,7 +17,9 @@ const Itemdetails = forwardRef(({childnavigate, item, setItem}, ref) =>{
     const [description, setDescription] = useState(item.description)
     const [remark, setRemark] = useState(item.remark)
     const [allItems, setAllItems] = useState([])
-    const [subitems, setSubItems] = useState(item.subitems)
+    const [preview, setPreview] = useState("img")
+    const [image, setImage] = useState("")
+    const { register, handleSubmit, formState: { errors } } = useForm();
     
     useImperativeHandle(
         ref,
@@ -27,11 +29,21 @@ const Itemdetails = forwardRef(({childnavigate, item, setItem}, ref) =>{
             item.name = name 
             item.description = description 
             item.remark = remark
-            item.subitems = subitems 
+            item.image = image
+            item.preview = preview
             setItem(item)
         },
       })
     )
+
+    const handleSetImage =(e)=>{
+        setImage(e.target.files[0])
+       
+        console.log(e.target.files[0])
+        const span = e.target.previousSibling
+        span.innerText = e.target.files[0].name
+        setPreview(URL.createObjectURL(e.target.files[0]))
+    }
     useEffect(()=>{
         axios.get(API_HOST+"/item").then((response)=>{
             const temp = []
@@ -42,50 +54,62 @@ const Itemdetails = forwardRef(({childnavigate, item, setItem}, ref) =>{
         })
     })
     const submit = () =>{
+       
         childnavigate('2')
         item.name = name 
         item.description = description 
         item.remark = remark
-        item.subitems = subitems 
+        item.image = image
+        item.preview = preview
         setItem(item)
         
     }
-    const handleSelect = (e)=>{
-        const temp =[]
-        e.forEach((item)=>{
-            temp.push(item)
-        })
-        setSubItems(temp)
-        
+    const onSubmit = (data, e) =>{
+        console.log(preview)
+        submit()
+    }
+    const onError = (errors, e) =>{
+        console.log(errors, e)
     }
 
   return (
     <div className='modal-sub-page' >
-        <Form>
+        <Form onSubmit={handleSubmit(onSubmit, onError)}>
             <Form.Group> 
                 <Form.Label>Item name</Form.Label> 
-                <Form.Control onChange = {(e)=>{setName(e.target.value)}} placeholder = {item.name===''? "Enter item name": item.name}  /> 
-                
+                <Form.Control 
+                {...register("itemname", {required: true})}
+                onChange = {(e)=>{setName(e.target.value)}} placeholder = {item.name===''? "Enter item name": item.name}  /> 
+                {errors.itemname && <Form.Text className = "error">Required</Form.Text>}
             </Form.Group>
             <Form.Group> 
                 <Form.Label>Description</Form.Label> 
-                <Form.Control onChange = {(e)=>{setDescription(e.target.value)}} placeholder = {item.description===''?"Enter item description": item.description}  /> 
+                <Form.Control
+                 onChange = {(e)=>{setDescription(e.target.value)}} placeholder = {item.description===''?"Enter item description": item.description}  /> 
                 
             </Form.Group>
-            <Form.Group>
-                <Form.Label> Sub Items </Form.Label> 
-                <Select defaultValue = {item.subitems} onChange= {handleSelect} classNamePrefix="select" closeMenuOnSelect={false} isMulti className = 'basic-multi-select' options = {allItems} />
-            </Form.Group>
+           
             
             <Form.Group> 
                 <Form.Label>Remarks</Form.Label> 
                 <Form.Control onChange = {(e)=>{setRemark(e.target.value)}}  placeholder = {item.remark===''? "Enter remarks for item": item.remark}  /> 
                 
             </Form.Group>
-        </Form> 
-        <div className = 'form-footer'> 
-            <Button onClick = {submit} className = "btn-block" variant = "primary" type = "submit"> Next </Button>
+            <div className='image-area'> 
+                    <label for = "image-upload">
+                        <AiOutlineCloudUpload id = {"upload-icon-create-item"}/>
+                        <span> Upload image</span> 
+                        <input {...register("image", {required: true})} onChange = {handleSetImage} id = 'image-upload' type = "file"/>
+                    
+                        <img  src={preview} />
+                    </label>
+                   
+                </div> 
+            <div className = 'form-footer'> 
+            <Button className = "btn-block" variant = "primary" type = "submit"> Next </Button>
         </div>
+        </Form> 
+       
     </div>
   )
 }

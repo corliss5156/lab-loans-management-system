@@ -9,47 +9,102 @@ import Table from 'react-bootstrap/Table'
 //Backend
 import axios from 'axios'
 import ENV from '../../../../config.js'; 
+
 const API_HOST = ENV.api_host
 
-
-export default function Review({handleSetItemSubmit, stock, item}) {
+export default function Review({handleSetItemSubmit, stock, item, errornotif, successnotif}) {
+    
     
     const submit = (e)=>{
         e.preventDefault()
-        const subitems = []
-        item.subitems.forEach((subitem)=>{
-            subitems.push(subitem.value)
-        })
-        
-        //Upload item
-        axios.post(API_HOST +'/item', {
-            name: item.name, 
-            description: item.description, 
-            remark: item.remark, 
-            subitems: subitems.toString()
-        }).then((response)=>{
-            console.log(response.data)
-        })
+    
+        let imageid = null 
+        console.log(item.preview===undefined)
+        let reader = new FileReader()
+        //Post image 
+        if (item.preview !=="img" && item.preview !== undefined){
+            console.log("Submit item.")
+           
 
-        
-        //Add stock 
-        stock.forEach((stocklevel)=>{
-            axios.post(API_HOST+'/stock', {
-                lab: stocklevel.lab, 
-                itemname: item.name, 
-                Available: stocklevel.Available, 
-                OnLoan: stocklevel['On Loan'], 
-                LabUse: stocklevel['Lab Use']
+            
+            reader.onloadend = function(){
+                let base64 = reader.result
+                console.log(base64)
+                axios.post(API_HOST+"/image", {
+                image: base64
+            }).then((response)=>{
+            
+                imageid = response.data.id 
+             //Upload item
+            axios.post(API_HOST +'/item', {
+                name: item.name.toString().replace('/', '-'), 
+                description: item.description, 
+                remark: item.remark,
+                imageid: imageid
+            }).then((response)=>{
+                console.log(response.data)
+                //Add stock 
+            stock.forEach((stocklevel)=>{
+                axios.post(API_HOST+'/stock', {
+                    lab: stocklevel.lab, 
+                    itemname: item.name, 
+                    Available: stocklevel.Available, 
+                    OnLoan: stocklevel['On Loan'], 
+                    LabUse: stocklevel['Lab Use']
 
-        }).then((response)=>{
-        })
-        })
-      //Close modal
-      const modal = document.getElementById('modal-create-item')
-        modal.style.display = 'none'
-        handleSetItemSubmit()
+            }).then((response)=>{
+                console.log(response)
+                //Close modal
+                const modal = document.getElementById('modal-create-item')
+                modal.style.display = 'none'
+                handleSetItemSubmit()
+                successnotif("Item successfully created.")
+            })
+            })
+            })})
+            
+        }
+        } else{
+            console.log("Submit")
+                console.log(item)
+                axios.post(API_HOST +'/item', {
+                    name: item.name.toString().replace('/', '-'), 
+                    description: item.description, 
+                    remark: item.remark
+                }).then((response)=>{
+                    console.log(response.data)
+                    if (response.status===200){
+                        successnotif("Item successfully created")
+                    }
+                    //Add stock 
+                stock.forEach((stocklevel)=>{
+                    axios.post(API_HOST+'/stock', {
+                        lab: stocklevel.lab, 
+                        itemname: item.name, 
+                        Available: stocklevel.Available, 
+                        OnLoan: stocklevel['On Loan'], 
+                        LabUse: stocklevel['Lab Use']
+    
+                }).then((response)=>{
+                    console.log(response)
+                    //Close modal
+                    const modal = document.getElementById('modal-create-item')
+                    modal.style.display = 'none'
+                    handleSetItemSubmit()
+                })
+                })
+                })
+                
+            }
+            reader.readAsDataURL(item.image)   
+        }
         
-    }
+
+      
+    
+        
+        
+    
     return (
         <div className='modal-sub-page' >
         <Form>
@@ -63,16 +118,18 @@ export default function Review({handleSetItemSubmit, stock, item}) {
                 <Form.Control disabled placeholder = {item.description}  /> 
                 
             </Form.Group>
-            <Form.Group>
-                <Form.Label> Sub Items </Form.Label> 
-                <Select classNamePrefix="select" closeMenuOnSelect={false} isDisabled = {true} isMulti className = 'basic-multi-select' defaultValue = {item.subitems}  />
-            </Form.Group>
+           
             
             <Form.Group> 
                 <Form.Label>Remarks</Form.Label> 
                 <Form.Control disabled placeholder = {item.remark=== ""? "No remarks" : item.remark}  /> 
                 
             </Form.Group>
+            <Form.Group> 
+                <Form.Label> Image </Form.Label>
+                <img src = {item.preview} />
+            </Form.Group>
+                
         </Form> 
         <div id = 'review-table'>
             <Table>
