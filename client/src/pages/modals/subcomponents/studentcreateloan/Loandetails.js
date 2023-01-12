@@ -71,6 +71,7 @@ const Loandetails = forwardRef(({childnavigate, loan, setloandetails, setLoanite
     loan.groupnumber = groupnumber
     loan.loanreason = loanreason
     loan.groupmembers = groupmembers
+    loan.lab = lab
     setloandetails(loan)
     
   }

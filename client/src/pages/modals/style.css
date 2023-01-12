@@ -423,23 +423,19 @@ select {
 
 /* Image upload  */
 
-.image-area label input{
-  display: none;
-
+.image-area label {
+  background-color: var(--lightblue);
+  color: white;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  margin-top: 1rem;
 }
 
-.image-area label{
+.image-area{
   width: 100%; 
-  height: 50vh; 
-  padding: 15px; 
-  border: 3px dashed #ccc; 
-  color: #ccc; 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
+  text-align: center;
 }
 
 
@@ -478,4 +474,45 @@ select {
 .modal-sub-page pre {
   background-color: #333333;
   color: white;
+}
+
+/* Loan form template modal */
+
+.deleteButton {
+  background-color: var(--errorred);
+  border-radius: 3px;
+  height:35px; 
+  width: 35px;
+  text-align: center;
+  padding:8px;
+  color:#fff;
+  border: none; 
+  cursor: pointer;
+}
+
+span.addItem {
+  background-color: var(--lightblue);
+  padding: 5px 15px;
+  color:white; 
+  max-height: 35px; 
+  border-radius: 3px;
+  cursor: pointer; 
+}
+
+div.addItem{
+  margin-top: 20px;
+}
+
+.css-1u9des2-indicatorSeparator{
+  max-height: 34px !important;
+  margin-top: 0px !important;
+}
+
+#loan-form-items div input{
+ margin-right: 27px; 
+ max-width: 322px;
+}
+
+.loanitem{
+  margin-bottom: 10px;
 }

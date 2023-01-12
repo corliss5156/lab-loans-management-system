@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Numberspinner({qtyreceived}){
+export default function Numberspinner({qtyreceived, itemname}){
     const handleChange = (e) => {
       const itemquantity = parseInt(e.target.parentElement.parentElement.previousSibling.textContent.trim())
       const itemname = e.target.parentElement.parentElement.previousSibling.previousSibling.childNodes[0]
@@ -22,7 +22,7 @@ export default function Numberspinner({qtyreceived}){
     <div className="numberspinner-container">
 	
 	
-    <input type="number" onChange={handleChange} className="input"  placeholder = {qtyreceived? qtyreceived: "Fill in quantity"}/> 
+    <input className = "numberspinner-input input" title = {itemname} type="number" onChange={handleChange} placeholder = {qtyreceived? qtyreceived: "Fill in quantity"}/> 
     </div>
   )
 }

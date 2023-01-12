@@ -24,9 +24,12 @@ export default function Staffeditreport({report, handleReportUpdate, successnoti
         modal.style.display = "none"
     }
     const submit = ()=>{
-        if(originalStatus==="Submitted" && status==="Complete"){
+        if(originalStatus==="Submitted" && status==="Processed"){
             //Reject
-            errornotif("Unable to change status from 'Submitted' to 'Complete'. Change to 'Approved' or 'Rejected' first.")
+            errornotif("Unable to change status from 'Submitted' to 'Processed'. Change to 'Approved' or 'Rejected' first.")
+        }
+        else if (originalStatus === "Rejected" && status === "Processed"){
+            errornotif("Unable to change status from 'Rejected' to 'Processed'.")
         }
         else{
             if(dispose){
@@ -109,10 +112,10 @@ export default function Staffeditreport({report, handleReportUpdate, successnoti
                             <option value = {status}>{status}</option>
                             <option value = "Approved">Approved</option>
                             <option value = "Rejected">Rejected</option> 
-                            <option value = "Complete">Complete</option>
+                            <option value = "Processed">Processed</option>
                         </Form.Select>
                     </Form.Group>
-                    {status==="Complete"? <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                    {status==="Processed"? <Form.Group className="mb-3" controlId="formBasicCheckbox">
         <Form.Check type="checkbox" label="Item was disposed" onChange = {(e)=>{setDispose(!dispose)}} />
       </Form.Group>: null}
                     <Form.Group> 

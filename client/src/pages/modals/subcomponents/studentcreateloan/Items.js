@@ -13,7 +13,9 @@ const Item = forwardRef(({items, childnavigate, childsetLoanItems, loanItems}, r
       //update loanitems with quantity 
       const loanItemsCopy = loanItems
       Array.from(quantities).forEach((container)=>{
-        const itemname = container.parentElement.previousSibling.previousSibling.childNodes[0].textContent.trim()
+        
+        const itemname = container.childNodes[0].title
+        
         if(container.childNodes[0].value.trim()) {
           loanItemsCopy[itemname]['qtyreceived'] = parseInt(container.childNodes[0].value.trim())     
         }
@@ -35,7 +37,8 @@ const Item = forwardRef(({items, childnavigate, childsetLoanItems, loanItems}, r
       //update loanitems with quantity 
       const loanItemsCopy = loanItems
       Array.from(quantities).forEach((container)=>{
-        const itemname = container.parentElement.previousSibling.previousSibling.childNodes[0].textContent.trim()
+        // const itemname = container.parentElement.previousSibling.previousSibling.childNodes[0].textContent.trim()
+        const itemname = container.childNodes[0].title
         if(container.childNodes[0].value.trim()) {
           loanItemsCopy[itemname]['qtyreceived'] = parseInt(container.childNodes[0].value.trim())     
         }
@@ -49,7 +52,7 @@ const Item = forwardRef(({items, childnavigate, childsetLoanItems, loanItems}, r
       childnavigate('3')
     
   }
-  
+
   
   return (
     <div className='modal-sub-page' id = 'items-sub-page'>

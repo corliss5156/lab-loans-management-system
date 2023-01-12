@@ -22,12 +22,24 @@ export default function Student() {
   }
   
   useEffect(()=>{
-   
+   console.log(loanSubmit)
     console.log(auth)
   }, [loanSubmit])
 
   const errornotif = (errormsg)=>{
     toast.error(errormsg, {
+        toastId:"student-home",
+        position: "bottom-center", 
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        progress: undefined, 
+        theme: "light"
+    })
+  }
+  const successnotif = (successmsg) =>{
+    toast.success(successmsg, {
+        toastId: "student-home",
         position: "bottom-center", 
         autoClose: 5000,
         hideProgressBar: true,
@@ -49,13 +61,13 @@ export default function Student() {
         <div id = "createloan">
          <Button onClick = {createloan}>Create loan</Button>
          
-         <Studentcreateloan errornotif = {errornotif} loanSubmit = {loanSubmit} handleSetLoanSubmit = {handleSetLoanSubmit}/>
+         <Studentcreateloan successnotif = {successnotif} errornotif = {errornotif} loanSubmit = {loanSubmit} handleSetLoanSubmit = {handleSetLoanSubmit}/>
          
         </div>
         
         <div id = "loan-table"> 
         
-          <LoanTable loanSubmit = {loanSubmit}/>
+          <LoanTable successnotif = {successnotif} errornotif = {errornotif} loanSubmit = {loanSubmit}/>
         </div>
         <ToastContainer position="bottom-center"
             autoClose={5000}

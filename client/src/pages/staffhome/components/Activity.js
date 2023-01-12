@@ -1,18 +1,22 @@
 import React, {useState, useEffect}from 'react'
 import '../style.css'
 //Bootstrap
-import { AiOutlineEdit } from 'react-icons/ai';
+import { AiOutlineEdit, AiFillDelete } from 'react-icons/ai';
 import Table from 'react-bootstrap/Table'
+import Button from 'react-bootstrap/Button'
 import Tippy from '@tippyjs/react'
 import 'tippy.js/dist/tippy.css';
+import Staffshowactivity from '../../modals/components/Staffshowactivity';
+import Staffdeleteactivity from '../../modals/components/Staffdeleteactivity';
 //Backend
 import axios from 'axios';
 import ENV from '../../../config.js'
-import Staffshowactivity from '../../modals/components/Staffshowactivity';
+
 const API_HOST = ENV.api_host
 
-export default function Activity() {
+export default function Activity({successnotif}) {
     const [activity, setActivity] = useState([])
+    const [deleteActivity, setDeleteActivity] = useState(false)
     
     useEffect(()=>{
         //Get activity
@@ -21,18 +25,26 @@ export default function Activity() {
             setActivity(response.data)
         })
 
-    },[]
+    },[deleteActivity]
     )
+    const handleSetDeleteActivity = () =>{
+        setDeleteActivity(!deleteActivity)
+    }
     const showModal = (e)=>{
-        console.log(e)
+       
         const modal = document.getElementById("modal-activity-" + e.target.name)
            modal.style.display = 'block'
     }
-
+    const showActivityModal = () =>{
+        const modal = document.getElementById("modal-activity-delete")
+        modal.style.display = "block"
+    }
     
   return (
     <div id = "staff-table">
-        <div className = "header"> Activity </div>
+        <div className = "header"> Activity 
+        <Button onClick = {showActivityModal} className = 'float-right' variant = "danger"><AiFillDelete/> Delete activity </Button>
+        </div>
         <Table> 
             <thead>
                 <tr>
@@ -55,6 +67,7 @@ export default function Activity() {
                 
                 </tr>
                 <Staffshowactivity activity = {avt} />
+                <Staffdeleteactivity handleSetDeleteActivity = {handleSetDeleteActivity}successnotif = {successnotif}/>
                 </>
             )
         })

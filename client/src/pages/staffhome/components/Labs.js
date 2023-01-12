@@ -14,15 +14,16 @@ import axios from 'axios';
 import ENV from '../../../config.js'
 const API_HOST = ENV.api_host
 
-export default function Labs({successnotif, errornotif}) {
+export default function Labs({successnotif, errornotif, createLab}) {
   const [labs, setLabs] = useState([])
   const [updateLab, setUpdateLab]= useState(false)
   useEffect(()=>{
+    console.log(("first"))
     axios.get(API_HOST+"/lab").then((response)=>{
     
       setLabs(response.data)
     })
-  }, [updateLab])
+  }, [updateLab, createLab])
   const handleUpdateLab = ()=>{
     setUpdateLab(!updateLab)
   }

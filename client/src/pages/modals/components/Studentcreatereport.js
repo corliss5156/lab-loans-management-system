@@ -12,7 +12,7 @@ import ENV from '../../../config.js';
 import axios from 'axios'
 const API_HOST = ENV.api_host;
 
-export default function Studentcreatereport({formreference, loan, handleReport}) {
+export default function Studentcreatereport({formreference, loan, handleReport, successnotif, errornotif}) {
     const [items, setItems] = useState([])
     const [loanItem, setLoanItem] = useState("")
     const [quantity, setQuantity] = useState(0)
@@ -28,23 +28,14 @@ export default function Studentcreatereport({formreference, loan, handleReport})
             setItems(response.data)
         })
     }, [])
-    const successnotif = (msg)=>{
-        toast.success(msg, {
-            position: "bottom-center", 
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            progress: undefined, 
-            theme: "light"
-        })
-    }
+
     const submit = ()=>{
         let imageid = null
         //Post image 
         let reader = new FileReader()
         reader.onloadend = function(){
             let base64 = reader.result
-            console.log(base64)
+            
             axios.post(API_HOST+"/image", {
                 image: base64
             }).then((response)=>{
@@ -83,12 +74,25 @@ export default function Studentcreatereport({formreference, loan, handleReport})
         modal.style.display = "none"
     }
     const handleSetImage =(e)=>{
-        setImage(e.target.files[0])
-       
-        console.log(e.target.files[0])
-        const span = e.target.previousSibling
-        span.innerText = e.target.files[0].name
-        setPreview(URL.createObjectURL(e.target.files[0]))
+        e.preventDefault()
+        let reader = new FileReader()
+        document.getElementById("image-prompt-"+formreference).style.display = "none"
+        if(e.target.files[0].size<64000){
+            reader.onload = () =>{
+                if(reader.readyState === 2){
+                  setPreview(reader.result)
+                  console.log(reader)
+                  setImage(e.target.files[0])
+                }
+            }
+           
+            reader.readAsDataURL(e.target.files[0])
+        }else{
+            errornotif("Maximum file size is 64kb.")
+        }
+        
+        
+        
     }
     
     const onSubmit = (data, e) =>{
@@ -96,8 +100,7 @@ export default function Studentcreatereport({formreference, loan, handleReport})
     }
     const onError = (errors, e) => console.log(errors, e);
  
-
-
+    
   return (
     <div>
     <div id = {'modal-create-report-' + formreference} className='modal'>
@@ -136,15 +139,19 @@ export default function Studentcreatereport({formreference, loan, handleReport})
                     <Form.Control {...register("reason", {required: true})} onChange = {e=>setReason(e.target.value)}type = 'text' placeholder = "Enter reason for loan request"/> 
                     {errors.qtyrequested && <Form.Text className = "error">Required</Form.Text>}
                 </Form.Group>
-                
-                <div className='image-area'> 
-                    <label for = "image-upload">
-                        <AiOutlineCloudUpload id = {"upload-icon-"+ formreference}/>
-                        <span> Upload screenshot of confirmation email from supervisor</span> 
-                        <input {...register("image", {required: true})} onChange = {handleSetImage} id = 'image-upload' type = "file"/>
+                <input hidden accept="image/png, image/jpeg"{...register("image", {required: true})} onChange = {handleSetImage} id = 'image-upload' type = "file"/>
+                <label for = "image-upload">
                     
-                        <img  src={preview} />
-                    </label>
+                    <span id = {"image-prompt-"+formreference}> Upload screenshot of confirmation email from supervisor</span> 
+                </label>
+                
+                <div > 
+                    
+                        
+                        
+                        
+                        <img src = {preview} />
+                    
                    
                 </div> 
                 <div className = 'form-footer'> 

@@ -86,7 +86,7 @@ export default function Staffcreateitem({handleSetItemSubmit, successnotif, erro
                 </div>
             </div>
             <div> 
-                {page === "1"? <Itemdetails ref = {itemssubmit} childnavigate = {childnavigate} item = {item} setItem = {setItem} /> : null}
+                {page === "1"? <Itemdetails errornotif={errornotif} ref = {itemssubmit} childnavigate = {childnavigate} item = {item} setItem = {setItem} /> : null}
                 {page ==="2"? <Stockdetails childnavigate = {childnavigate} stock = {stock} setStock = {setStock} /> : null}
                 {page === "3"? <Review  successnotif = {successnotif} errornotif = {errornotif} handleSetItemSubmit={handleSetItemSubmit} stock = {stock} item = {item} />: null }
             </div>

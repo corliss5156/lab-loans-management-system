@@ -20,7 +20,7 @@ import Staffedititem from '../../modals/components/Staffedititem';
 const API_HOST = ENV.api_host;
 
 
-const InventoryTable = forwardRef(({selected, itemSubmit, editItem, handleEditItemSubmit}, ref)=>{
+const InventoryTable = forwardRef(({selected, itemSubmit, editItem, handleEditItemSubmit, successnotif, errornotif}, ref)=>{
   const [selectChange, setSelectChange] = useState(false)
   const [stocklevels, setStocklevels] = useState([])
   const [labs, setLabs] = useState([])
@@ -135,8 +135,8 @@ const InventoryTable = forwardRef(({selected, itemSubmit, editItem, handleEditIt
 
               </tr> 
 
-              <ExpandedTable editItem= {editItem} key = {stock.itemname+ "-" + stock.lab + "-expanded"} stock = {stock}/>
-              <Staffedititem  editItem = {editItem} handleEditItemSubmit = {handleEditItemSubmit} stock = {stock} /> 
+              <ExpandedTable successnotif= {successnotif} errornotif={errornotif}  editItem= {editItem} key = {stock.itemname+ "-" + stock.lab + "-expanded"} stock = {stock}/>
+              <Staffedititem successnotif= {successnotif} errornotif={errornotif} editItem = {editItem} handleEditItemSubmit = {handleEditItemSubmit} stock = {stock} /> 
               </>
             )
           

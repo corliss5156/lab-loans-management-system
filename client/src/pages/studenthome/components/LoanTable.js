@@ -25,7 +25,7 @@ import axios from 'axios';
 const API_HOST = ENV.api_host;
 
 
-function LoanTable(props){
+function LoanTable({loanSubmit, successnotif, errornotif}){
 
     
   const [loans, setLoans] = useState([])
@@ -37,7 +37,7 @@ function LoanTable(props){
     axios.get(url).then((response)=>{
         setLoans(response.data)
     })
-  }, [props.loanSubmit, report])
+  }, [loanSubmit, report])
   
   const handleReport = ()=>{
     setReport(!report)
@@ -107,9 +107,9 @@ function LoanTable(props){
                   </Tippy>
                   </td>
             </tr>
-            <ExpandedTable key = {loan.formreference + "-expanded"} loan = {loan} />
+            <ExpandedTable key = {loan.formreference + "-expanded"} report = {report} loan = {loan} />
             <Studentshowloan formreference={loan.formreference}/> 
-            <Studentcreatereport handleReport = {handleReport} loan = {loan}formreference={loan.formreference}/> 
+            <Studentcreatereport successnotif = {successnotif} errornotif = {errornotif} handleReport = {handleReport} loan = {loan}formreference={loan.formreference}/> 
             
             </>
             

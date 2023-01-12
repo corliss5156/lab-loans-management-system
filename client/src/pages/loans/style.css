@@ -75,3 +75,8 @@ p{
     text-align: right;
     margin: 4vh 5vw;
 }
+
+#loan-table-staff {
+    margin:13vh 5vw; 
+    background-color: white;
+}

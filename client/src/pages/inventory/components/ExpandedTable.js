@@ -10,12 +10,14 @@ import 'tippy.js/dist/tippy.css';
 import { AiOutlineEdit } from 'react-icons/ai';
 //Backend
 import axios from 'axios'
+import Staffaddimage from '../../modals/components/Staffaddimage.js';
 const API_HOST = ENV.api_host;
 
-export default function ExpandedTable({stock, editItem}) {
+export default function ExpandedTable({stock, editItem, successnotif, errornotif}) {
     const [itemstock, setItemstock] = useState([])
     const [itemDetail, setItemDetail] = useState([])
     const [image, setImage] = useState("")
+    const [imageUpdate, setImageUpdate] = useState(false)
     useEffect(()=>{
        axios.get(API_HOST+"/stock/itemname/"+ encodeURIComponent(stock.itemname)).then((response)=>{
         setItemstock(response.data)
@@ -41,12 +43,21 @@ export default function ExpandedTable({stock, editItem}) {
     })
         
         
-    }, [editItem])
+    }, [editItem, imageUpdate])
+    const handleSetImageUpdate = ()=>{
+        setImageUpdate(!imageUpdate)
+    }
     
-    const showModal = (e)=> {
+    const showModalUpdate = (e)=> {
         console.log(e)
         const modal = document.getElementById("modal-update-image-"+ e.target.alt)
         modal.style.display = "block"
+    }
+    const showModalAdd = (e) =>{
+        console.log(e)
+        const modal = document.getElementById("modal-add-image-"+ e.target.title)
+        modal.style.display = "block"
+        console.log(modal)
     }
   return (
     
@@ -101,14 +112,16 @@ export default function ExpandedTable({stock, editItem}) {
                    
                     
                 
-                        <h3> Image</h3>
+                        <h3> Image </h3>
+                        
                         {image!== ""? 
                         
-                        <img src= {image} alt={itemDetail.imageid} onClick = {showModal} className="img-overlay-image"/>
+                        <img  src= {image} alt={itemDetail.imageid} onClick = {showModalUpdate} className="img-overlay-image"/>
                        
-                      : <button >No image found</button>}
+                      : <span title = {itemDetail.name} onClick = {showModalAdd} className = "cursor">No image found</span>}
                     
-                    <Staffupdateimage img = {image} itemDetail = {itemDetail} />
+                    <Staffupdateimage handleSetImageUpdate = {handleSetImageUpdate} successnotif= {successnotif} errornotif={errornotif}  img = {image} itemDetail = {itemDetail} />
+                    <Staffaddimage handleSetImageUpdate = {handleSetImageUpdate} successnotif= {successnotif} errornotif={errornotif}  itemDetail = {itemDetail} />
                 </div>
         
         </td>

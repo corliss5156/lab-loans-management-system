@@ -5,7 +5,7 @@ import {useForm} from 'react-hook-form'
 //Bootstrap 
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { AiOutlineDownload, AiTwotoneEdit } from 'react-icons/ai'
+import { AiOutlineDownload, AiFillDelete } from 'react-icons/ai'
 
 //Backend
 import axios from 'axios'
@@ -15,7 +15,7 @@ const API_HOST = ENV.api_host;
 
 
 
-export default function ({errornotif}) {
+export default function ({successnotif, handleSetDeleteActivity }) {
     var today = new Date();
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -23,35 +23,17 @@ export default function ({errornotif}) {
     const [endDate, setEndDate] = useState("")
     
     const closeModal = ()=>{
-        const modal = document.getElementById('modal-activity-csv')
+        const modal = document.getElementById('modal-activity-delete')
         modal.style.display = 'none'
     }
     
    
-    const downloadCSV = ()=>{
+    const deleteActivity = ()=>{
        
         
-axios.get(API_HOST+"/activity/date/" + startDate + '/' + endDate).then((response)=>{
-            const data = response.data
-            const titleKeys = Object.keys(data[0])
-            const refinedData = []
-            refinedData.push(titleKeys)
-            data.forEach(item => {
-                refinedData.push(Object.values(item))  
-              })
-            let csvContent = ''
-
-            refinedData.forEach(row => {
-            csvContent += row.join(',') 
-            csvContent += '\r\n'
-            })
+axios.post(API_HOST+"/activity/date/" + startDate + '/' + endDate).then((response)=>{
             
-            console.log(csvContent)
-            var hiddenElement = document.createElement('a');
-            hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvContent);
-            hiddenElement.target = '_blank';
-            hiddenElement.download = 'Activity.csv';
-            hiddenElement.click();
+            handleSetDeleteActivity() 
         })
         
         closeModal()
@@ -61,27 +43,19 @@ axios.get(API_HOST+"/activity/date/" + startDate + '/' + endDate).then((response
     }
     
     const onSubmit = (data, e) => {
-        axios.get(API_HOST+"/activity/date/" + startDate + '/' + endDate).then((response)=>{
-            
-            
-            const data = response.data
-            if(data==="No records found."){
-                errornotif("No records found. Change date range.")
-            }
-            else{
-                downloadCSV()
-            }
-        })
+            deleteActivity()
+            successnotif("Successfully deleted")
+         
     };
     const onError = (errors, e) => console.log(errors, e);
 
   return (
     
-        <div id = 'modal-activity-csv' className = 'modal'> 
+        <div id = 'modal-activity-delete' className = 'modal'> 
             <div className='modal-content'> 
                 <span onClick = {closeModal} className = "close"> &times; </span>
             <div className= 'modal-header'> 
-                <h2> Export activity data to CSV </h2> 
+                <h2> Delete activity data </h2> 
             </div>
             <div className='modal-sub-page'> 
                 <Form onSubmit={handleSubmit(onSubmit, onError)}>
@@ -106,7 +80,7 @@ axios.get(API_HOST+"/activity/date/" + startDate + '/' + endDate).then((response
                 </div>
                 <div className = 'form-footer'> 
                   
-                  <Button  className = "btn-block" variant = "primary" type = "submit" > <AiOutlineDownload/> Download CSV</Button>
+                  <Button  className = "btn-block" variant = "danger" type = "submit" > <AiFillDelete/> Delete</Button>
               </div>
                 </Form>
                 

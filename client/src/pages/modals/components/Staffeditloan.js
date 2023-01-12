@@ -19,7 +19,7 @@ const API_HOST = ENV.api_host;
 
 
 
-export default function Staffeditloan({errornotif, email, formreference, handleUpdate}) {
+export default function Staffeditloan({successnotif, errornotif, email, formreference, handleUpdate}) {
    
     const auth = useContext(AuthContext)
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -77,6 +77,7 @@ export default function Staffeditloan({errornotif, email, formreference, handleU
       doc.save(loan.formreference+".pdf");
     }
     useEffect(()=>{
+        
         axios.get(API_HOST+ "/loanrequest/"+ email + "/" + formreference).then((response)=>{
             setLoan(response.data[0])
             setOriginalStatus(response.data[0].status)
@@ -88,12 +89,11 @@ export default function Staffeditloan({errornotif, email, formreference, handleU
         })
         axios.get(API_HOST + '/loanitem/' + formreference).then((response)=>{
             const data = response.data
+            
             setItems(data)
             setOriginalItems(data)
             setNewItems(data)
         })
-        
-        console.log(loan.returndate)
         
     }, [])
     const closeModal = () => {
@@ -171,15 +171,9 @@ export default function Staffeditloan({errornotif, email, formreference, handleU
                 //Check that all qtytoreceive == qtyreceived. If yes update stock based on qtyreceived 
                
                 //If no changes were made to inputs, direct update 
-                if(change.length===0){
-                    updateRemark()
-                    normalEdit(newstatus)
-                    closeModal()
-                    handleUpdate()
-                    
-                }
+                
                 //Check through all number spinners
-                else{
+                
                     const tbody = document.getElementById('tbody-'+ formreference)
                     const numberspinners = tbody.getElementsByClassName("input")
                     
@@ -187,6 +181,7 @@ export default function Staffeditloan({errornotif, email, formreference, handleU
                     let allsame = true
                     for (let input in numberspinners){
                         if(numberspinners[input].className==="input"){
+                            console.log(numberspinners[input])
                             if(parseInt(numberspinners[input].name)!==parseInt(numberspinners[input].value)) {allsame = false}
                         }
                     }
@@ -200,7 +195,7 @@ export default function Staffeditloan({errornotif, email, formreference, handleU
                         //Else 
                         errornotif("Status of loan cannot be 'On Loan' if quantities to receive do not equal to quantities received ")
                     }
-                }
+                
                 
             } 
             else if (originalstatus === "To Be Approved"&&newstatus ==="Partial"){
@@ -220,6 +215,8 @@ export default function Staffeditloan({errornotif, email, formreference, handleU
                     }else{
                         updateRemark()
                         normalEdit("Partial")
+                        closeModal()
+                        handleUpdate()
                     }
             }
             else if (originalstatus==="Partial"&&newstatus==="On Loan"){
@@ -293,10 +290,14 @@ export default function Staffeditloan({errornotif, email, formreference, handleU
                 })
                 //Decrement on loan stock for item
                 axios.put(API_HOST +"/stock/decrement/"+ loan.lab+"/"+items[item].item, {
-                    status: "On Loan", 
+                    status: "OnLoan", 
                     qtyreceived: items[item].qtyreceived
                 }).then((response)=>{
                     console.log(response)
+                    if(response.data.name){
+                        errornotif(response.data.original.sqlmessage)
+                    }
+                    successnotif("Successfully updated.")
                 })
             }
         })
@@ -371,6 +372,7 @@ export default function Staffeditloan({errornotif, email, formreference, handleU
                 qtyreceived: newitems[item].qtyreceived
             }).then((response)=>{
                 console.log(response)
+                successnotif("Successfully updated")
             })
         }
         })
@@ -472,9 +474,10 @@ export default function Staffeditloan({errornotif, email, formreference, handleU
           </thead>
           <tbody id = {'tbody-' + formreference}>
             {items.map((item)=>{
+                
                 if(parseInt(item['qtytoreceive']) !== parseInt(item['qtyreceived'])){
-                    setRowIndex(rowIndex+1)
-                    console.log(rowIndex)
+                    // setRowIndex(rowIndex+1)
+                    // console.log(rowIndex)
                     return(
                       <tr >
                         <td> <div><FiAlertCircle style = {{color: 'red'}}/></div></td>

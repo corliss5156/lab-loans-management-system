@@ -23,7 +23,6 @@ function Inventory() {
   const [editItem, setEditItem] = useState(false)
 
   useEffect(()=>{
-    console.log("rerender")
     const url = API_HOST + "/lab"
     axios.get(url).then((response)=>{
       setLabs(response.data)
@@ -45,6 +44,7 @@ function Inventory() {
 const successnotif = (successmsg) =>{
   console.log("SEnd success")
   toast.success(successmsg,{
+    toastId: "inventory-notif",
     position: "bottom-center", 
     autoClose: 5000,
     hideProgressBar: true,
@@ -112,7 +112,7 @@ const successnotif = (successmsg) =>{
         <Staffcsvinventory errornotif = {errornotif} />
         
          <div id = "inventory-table"> 
-          <InventoryTable editItem = {editItem} handleEditItemSubmit = {handleEditItemSubmit} itemSubmit = {itemSubmit} ref = {InventoryTableref} selected = {selected}/>
+          <InventoryTable successnotif = {successnotif}  errornotif = {errornotif} editItem = {editItem} handleEditItemSubmit = {handleEditItemSubmit} itemSubmit = {itemSubmit} ref = {InventoryTableref} selected = {selected}/>
         </div>
         <ToastContainer position="bottom-center"
             autoClose={5000}

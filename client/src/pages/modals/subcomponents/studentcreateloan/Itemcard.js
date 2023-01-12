@@ -1,16 +1,30 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Numberspinner from '../Numberspinner'
 
-export default function Itemcard({itemname, imgpath, description, subitems, qtyreceived}) {
-    let image_path = ''
+//Backend
 
-    try {
-        image_path = require('../../../../assets/images/' + itemname + '.jpg')
-    } catch(err) {
-        image_path = require('../../../../assets/images/Robot Car.jpg')
-        
-        console.log("err")
-    }
+import axios from 'axios'
+import ENV from '../../../../config.js'; 
+
+const API_HOST = ENV.api_host;
+
+
+export default function Itemcard({itemname, imgpath, description, subitems, qtyreceived}) {
+    const [image, setImage ]  = useState("")
+
+    useEffect(()=>{
+        //Get image id from itemname 
+        axios.get(API_HOST + "/item/" + itemname).then((response)=>{
+            if (response.data[0].imageid !== null){
+                const imageid = response.data[0].imageid 
+                axios.get(API_HOST+"/image/"+ imageid).then((res)=>{
+                   setImage(res.data.image)
+                })
+            }
+            
+        })
+    })
+
     
     const handleCheck = (e) => {
         const checkbox = e.target
@@ -35,7 +49,7 @@ export default function Itemcard({itemname, imgpath, description, subitems, qtyr
         <td rowSpan = {subitems.length}>
             <div className = 'checkbox-div'>
                 <h3> {itemname} </h3>
-                <img src = {image_path}/>
+                <img src = {image}/>
                 
                 <p> {description} </p> 
                 <div> </div>
@@ -50,7 +64,7 @@ export default function Itemcard({itemname, imgpath, description, subitems, qtyr
             
         </td>
         <td > {subitems[0].quantity} </td> 
-        <td > <Numberspinner qtyreceived = {qtyreceived}/> </td> 
+        <td > <Numberspinner itemname = {subitems[0].name} qtyreceived = {qtyreceived}/> </td> 
         
     </tr>
     {subitems.length > 1 ? subitems.map((value, index)=>{
@@ -68,7 +82,7 @@ export default function Itemcard({itemname, imgpath, description, subitems, qtyr
                             
                         </td>
                         <td className='no-border'> {value.quantity}</td>
-                        <td className='no-border'> <Numberspinner /> </td>
+                        <td className='no-border'> <Numberspinner itemname = {value.name}/> </td>
                      </tr> 
                 )
             }

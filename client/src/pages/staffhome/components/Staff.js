@@ -21,7 +21,7 @@ export default function Staff() {
   const auth = useContext(AuthContext)
   const [createLab, setCreateLab] = useState(false)
   useEffect(()=>{
-
+    console.log(("Rerender"))
   }, [createLab])
   const errornotif = (errormsg)=>{
     toast.error(errormsg, {
@@ -82,11 +82,11 @@ const showStaffCSVActivity = () =>{
           <div className = "md"> 
           
           <div> 
-              <Activity />
+              <Activity successnotif={successnotif} />
             </div> 
             <div> 
               
-              <Labs successnotif={successnotif} errornotif = {errornotif} />
+              <Labs createLab = {createLab} successnotif={successnotif} errornotif = {errornotif} />
             </div> </div>
         </div> 
         <ToastContainer position="bottom-center"

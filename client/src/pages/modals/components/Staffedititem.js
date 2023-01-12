@@ -15,7 +15,7 @@ import { AuthContext } from "../../../helpers/AuthContext";
 
 
 
-export default function Staffedititem({handleEditItemSubmit, stock, editItem}) {
+export default function Staffedititem({handleEditItemSubmit, stock, editItem, successnotif, errornotif}) {
    
     const [item, setItem] = useState([])
     const [newStock, setNewStock] = useState([])
@@ -115,6 +115,11 @@ export default function Staffedititem({handleEditItemSubmit, stock, editItem}) {
             LabUse: newStock.LabUse
         }).then((response)=>{
             console.log(response.data)
+            if (response.data.name){
+                errornotif(response.data.name)
+            }else{
+                successnotif("Item successfully editted.")
+            }
         })
 
         //Insert into activity 

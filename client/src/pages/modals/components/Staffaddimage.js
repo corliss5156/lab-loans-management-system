@@ -15,14 +15,14 @@ const API_HOST = ENV.api_host;
 
 
 
-export default function ({errornotif, img, itemDetail, successnotif, handleSetImageUpdate}) {
+export default function ({errornotif,  itemDetail, successnotif, handleSetImageUpdate}) {
     
     const [image, setImage] = useState([])
     const [preview, setPreview] = useState(undefined)
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const closeModal = ()=>{
-        const modal = document.getElementById('modal-update-image-'+ itemDetail.imageid)
+        const modal = document.getElementById('modal-add-image-'+ itemDetail.name)
         modal.style.display = 'none'
     }
     
@@ -56,21 +56,30 @@ export default function ({errornotif, img, itemDetail, successnotif, handleSetIm
         
         
         let reader = new FileReader()
+        let imageid = null
         reader.onloadend = function(){
             let base64 = reader.result 
 
-            axios.put(API_HOST + "/image", {
-                id: itemDetail.imageid, 
+            axios.post(API_HOST + "/image", {
+              
                 image: base64
             }).then((response)=>{
-                if (response.data.image.id === itemDetail.imageid){
-                    successnotif("Image successfully updated")
-                    handleSetImageUpdate()
-                    closeModal()
-                }else{
-                    errornotif("Unable to update image")
-                }
-            })
+                
+                   
+                    //Update itemid
+                    console.log(response)
+                    imageid = response.data.id
+                    axios.put(API_HOST + "/item/image/"+itemDetail.name,{
+                        imageid: imageid
+                    } ).then((res)=>{
+                        console.log(res)
+                        successnotif("Image successfully updated")
+                        handleSetImageUpdate()
+                        closeModal()
+                    })})
+                    
+                
+            
         }
         reader.readAsDataURL(image)
     }
@@ -80,7 +89,7 @@ export default function ({errornotif, img, itemDetail, successnotif, handleSetIm
     const onError = (errors, e) => console.log(errors, e);
   return (
     
-        <div id = {'modal-update-image-' + itemDetail.imageid} className = 'modal'> 
+        <div id = {'modal-add-image-' + itemDetail.name} className = 'modal'> 
             <div className='modal-content'> 
                 <span onClick = {closeModal} className = "close"> &times; </span>
             <div className= 'modal-header'> 
@@ -99,10 +108,7 @@ export default function ({errornotif, img, itemDetail, successnotif, handleSetIm
                     </div>
                     
                     
-                    <div  className='md'> 
-                    <span> Original image </span>
-                        <img src = {img} />    
-                    </div> 
+                
                 
                 </div>
                 <div className = 'form-footer'> 

@@ -45,8 +45,10 @@ export default function Staffcreatelab({handleCreateLab, successnotif, errornoti
             console.log(response)
             if(response.data==="Validation error"){
                 errornotif("Lab name must be unique.")
+
             }else{
                 successnotif("Lab successfully created.")
+                handleCreateLab()
                 closeModal()
             }
         })

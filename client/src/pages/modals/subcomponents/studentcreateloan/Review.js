@@ -1,4 +1,4 @@
-import React, { useContext }  from 'react'
+import React, { useContext, useEffect }  from 'react'
 
 //Bootstrap
 import Button from 'react-bootstrap/esm/Button'
@@ -13,7 +13,7 @@ import { AuthContext } from '../../../../helpers/AuthContext';
 const API_HOST = ENV.api_host;
 
 
-export default function Review({loan, loanItems, handleSetLoanSubmit}) {
+export default function Review({loan, loanItems, handleSetLoanSubmit, errornotif, successnotif}) {
   
   const auth = useContext(AuthContext)
   const date = new Date()
@@ -22,6 +22,7 @@ export default function Review({loan, loanItems, handleSetLoanSubmit}) {
   const submit = (event) =>{
     event.preventDefault()
     console.log(loan.lab)
+
     
     // Upload to loanitems table 
     axios.post(API_HOST + "/loanrequest", {
@@ -36,7 +37,11 @@ export default function Review({loan, loanItems, handleSetLoanSubmit}) {
       lab: loan.lab, 
       groupmembers: loan.groupmembers.toString()
     }).then((response)=>{
-      console.log(response)
+      if (response.data.name === "SequelizeUniqueConstraintError"){
+        errornotif("Please check that form reference number is unique.")
+      }
+      successnotif("Loan request successfully submitted.")
+     
       for (const item in loanItems) {
         console.log(item)
         axios.post(API_HOST + "/loanitem", {
@@ -47,6 +52,8 @@ export default function Review({loan, loanItems, handleSetLoanSubmit}) {
           qtytoreceive: loanItems[item]['qtytoreceive']
         }).then((response)=>{
           console.log(response)
+          
+          
         })
       }
     })
@@ -57,6 +64,10 @@ export default function Review({loan, loanItems, handleSetLoanSubmit}) {
     modal.style.display = 'none'
     handleSetLoanSubmit()
   }
+
+  useEffect(()=>{
+    console.log(loanItems)
+  })
   return (
     <div className='modal-sub-page' id = 'review-sub-page'>
       <div className='modal-sub-page' id = 'loandetail-sub-page'>
@@ -143,7 +154,7 @@ export default function Review({loan, loanItems, handleSetLoanSubmit}) {
             </tr>
           </thead>
           <tbody>
-            {Object.keys(loanItems).length > 1 ? 
+            {Object.keys(loanItems).length > 0 ? 
             Object.keys(loanItems).map((key)=>{
               if(parseInt(loanItems[key]['qtytoreceive']) !== parseInt(loanItems[key]['qtyreceived'])){
                 

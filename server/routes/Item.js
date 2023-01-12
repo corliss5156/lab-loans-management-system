@@ -66,4 +66,17 @@ router.put('/:itemname', async(req, res)=>{
     })
 })
 
+router.put("/image/:itemname", async(req, res)=>{
+    await Items.update({
+        imageid: req.body.imageid}, {where: {
+            name: req.params.itemname
+        }
+    }).catch((err)=>{
+        res.json(err)
+    })
+    res.json({
+        "name": req.params.itemname, 
+        "imageid": req.body.imageid
+    })
+})
 module.exports = router 

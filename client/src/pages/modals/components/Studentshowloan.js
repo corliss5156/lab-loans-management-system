@@ -58,7 +58,7 @@ export default function Studentshowloan({formreference}) {
 
         axios.get(API_HOST+ "/loanrequest/"+auth.authState.user + "/" + formreference).then((response)=>{
             setLoan(response.data[0])
-            console.log(loan)
+            
             setGroupmembers(Array.from(response.data[0].groupmembers.split(',')))
             
         })

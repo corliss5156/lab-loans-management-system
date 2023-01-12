@@ -14,7 +14,7 @@ import ENV from '../../../config.js';
 const API_HOST = ENV.api_host;
 
 
-function LoanTable({errornotif}){
+function LoanTable({errornotif, successnotif}){
     
 
   const [loans, setLoans] = useState([])
@@ -93,7 +93,7 @@ function LoanTable({errornotif}){
                 </td>
             </tr>
             <ExpandedTable  key = {loan.formreference + "-expanded"} loan = {loan} />
-            <Staffeditloan errornotif={errornotif} handleUpdate = {handleUpdate} email = {loan.borroweremail} formreference = {loan.formreference}/>
+            <Staffeditloan successnotif = {successnotif} errornotif={errornotif} handleUpdate = {handleUpdate} email = {loan.borroweremail} formreference = {loan.formreference}/>
             </>
             
           

@@ -12,12 +12,12 @@ import axios from 'axios'
 import ENV from '../../../../config.js'; 
 const API_HOST = ENV.api_host
 
-const Itemdetails = forwardRef(({childnavigate, item, setItem}, ref) =>{
+const Itemdetails = forwardRef(({childnavigate, item, setItem, errornotif}, ref) =>{
     const [name, setName] = useState(item.name)
     const [description, setDescription] = useState(item.description)
     const [remark, setRemark] = useState(item.remark)
     const [allItems, setAllItems] = useState([])
-    const [preview, setPreview] = useState("img")
+    const [preview, setPreview] = useState()
     const [image, setImage] = useState("")
     const { register, handleSubmit, formState: { errors } } = useForm();
     
@@ -37,12 +37,25 @@ const Itemdetails = forwardRef(({childnavigate, item, setItem}, ref) =>{
     )
 
     const handleSetImage =(e)=>{
-        setImage(e.target.files[0])
-       
-        console.log(e.target.files[0])
-        const span = e.target.previousSibling
-        span.innerText = e.target.files[0].name
-        setPreview(URL.createObjectURL(e.target.files[0]))
+        e.preventDefault()
+        let reader = new FileReader()
+        document.getElementById("image-prompt").style.display = "none"
+        if(e.target.files[0].size<64000){
+            reader.onload = () =>{
+                if(reader.readyState === 2){
+                  setPreview(reader.result)
+                  console.log(reader)
+                  setImage(e.target.files[0])
+                }
+            }
+           
+            reader.readAsDataURL(e.target.files[0])
+        }else{
+            errornotif("Maximum file size is 64kb.")
+        }
+        
+        
+        
     }
     useEffect(()=>{
         axios.get(API_HOST+"/item").then((response)=>{
@@ -95,16 +108,14 @@ const Itemdetails = forwardRef(({childnavigate, item, setItem}, ref) =>{
                 <Form.Control onChange = {(e)=>{setRemark(e.target.value)}}  placeholder = {item.remark===''? "Enter remarks for item": item.remark}  /> 
                 
             </Form.Group>
-            <div className='image-area'> 
-                    <label for = "image-upload">
-                        <AiOutlineCloudUpload id = {"upload-icon-create-item"}/>
-                        <span> Upload image</span> 
-                        <input {...register("image", {required: true})} onChange = {handleSetImage} id = 'image-upload' type = "file"/>
-                    
-                        <img  src={preview} />
-                    </label>
-                   
-                </div> 
+
+            <input accept="image/png, image/jpeg" {...register("image", {required: true})} onChange = {handleSetImage} id = 'image-upload' type = "file" hidden/>
+            <label for = "image-upload">             
+                <span id = {"image-prompt"}> Upload image</span> 
+            </label>
+            <div >    
+                <img  src={preview} />
+            </div> 
             <div className = 'form-footer'> 
             <Button className = "btn-block" variant = "primary" type = "submit"> Next </Button>
         </div>

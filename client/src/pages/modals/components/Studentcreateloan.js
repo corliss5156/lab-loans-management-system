@@ -11,7 +11,7 @@ import axios from 'axios'
 const API_HOST = ENV.api_host;
 
 
-export default function Studentcreateloan({ errornotif, loanSubmit, handleSetLoanSubmit}) {
+export default function Studentcreateloan({successnotif , errornotif, loanSubmit, handleSetLoanSubmit}) {
     const [page, setPage] = useState('1')
     const [loan, setLoan] = useState({
         'formreference': '',
@@ -77,6 +77,8 @@ export default function Studentcreateloan({ errornotif, loanSubmit, handleSetLoa
                
                 
               })
+              console.log(mainitems)
+              console.log(subitems)
               subitems.forEach((item)=>{
                 setofitems[item.mainitem]['subitems'].push({
                   'name': item.item, 
@@ -168,7 +170,7 @@ export default function Studentcreateloan({ errornotif, loanSubmit, handleSetLoa
               
                 {page === "1"? <Loandetails ref = {loandetailssubmit} childnavigate = {childnavigate} loan = {loan} setLoanitems = {setLoanitems} setloandetails = {setloandetails}/> : null}
                 {page=== "2"? <Items ref = {itemsubmit} childnavigate = {childnavigate} items = {items} loanItems = {loanItems} childsetLoanItems = {childsetLoanItems} />: null } 
-                {page === "3"?<Review handleSetLoanSubmit = {handleSetLoanSubmit} loanSubmit = {loanSubmit} childnavigate = {childnavigate} loanItems = {loanItems} loan = {loan} />: null}
+                {page === "3"?<Review successnotif = {successnotif} errornotif={errornotif} handleSetLoanSubmit = {handleSetLoanSubmit} loanSubmit = {loanSubmit} childnavigate = {childnavigate} loanItems = {loanItems} loan = {loan} />: null}
             </div>
 
             </div>

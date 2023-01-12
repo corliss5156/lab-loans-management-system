@@ -8,7 +8,7 @@ import axios from 'axios'
 import ENV from '../../../config.js'; 
 const API_HOST = ENV.api_host;
 
-export default function ExpandedTable({loan}) {
+export default function ExpandedTable({loan, report}) {
     const [items, setitems] = useState([])
     const [reports, setReports] = useState([])
     useEffect(()=>{
@@ -28,7 +28,7 @@ export default function ExpandedTable({loan}) {
         })
         
         
-    }, [])
+    }, [report])
   return (
     <tr id = {loan.formreference + '-expanded'}className='expanded'>
         <td> </td>

@@ -47,4 +47,20 @@ router.get("/date/:startdate/:enddate", async(req, res)=>{
     res.json(activity)
    }
 })
+
+router.post("/date/:startdate/:enddate", async(req, res)=>{
+    const startdate = new Date(req.params.startdate)
+    const enddate = new Date(req.params.enddate)
+    
+    await Activities.destroy({
+        where: {
+            
+            createdAt: {
+                [Op.between]: [startdate, enddate]
+            }
+            
+        }
+    })
+    res.json("Successfully deleted")
+})
 module.exports = router 
