@@ -25,7 +25,7 @@ function App() {
   const [authState, setAuthState] = useState({
     user: "", 
     status: false, 
-    userType: "student"
+    userType: ""
   });
 
   useEffect(() => {
@@ -44,7 +44,8 @@ function App() {
           console.log(response)
           setAuthState({
             user: response.data.username, 
-            status: true
+            status: true, 
+            userType: response.data.userType
           });
         }
       });

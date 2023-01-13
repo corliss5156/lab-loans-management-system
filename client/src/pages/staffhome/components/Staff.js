@@ -54,11 +54,9 @@ const showStaffCSVActivity = () =>{
   const modal = document.getElementById("modal-activity-csv")
   modal.style.display = "block"
 }
-  useEffect(()=>{
-    console.log(auth)
-  })
+  
   if (auth.authState.status === false || auth.authState.userType === "student"){
-    return <Navigate replace to="/staff/login" />;
+    return <Navigate replace to="/" />;
   }else{
     return (
       <div> 

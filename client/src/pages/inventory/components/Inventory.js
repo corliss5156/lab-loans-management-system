@@ -79,8 +79,8 @@ const successnotif = (successmsg) =>{
   const handleSetItemSubmit = ()=>{
     setItemSubmit(!itemSubmit)
   }
-  if (auth.authState.status ===false) {
-    return <Navigate replace to="/staff/inventory" />;
+  if (auth.authState.status ===false|| auth.authState.userType === "student") {
+    return <Navigate replace to="/" />;
   }else{
   return (
     <div> 

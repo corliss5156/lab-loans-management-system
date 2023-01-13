@@ -13,6 +13,7 @@ const db  = require("./models")
 
 
 //Routes 
+
 const studentRouter = require("./routes/Student")
 app.use("/student", studentRouter)
 const loanrequestRouter = require("./routes/LoanRequest")

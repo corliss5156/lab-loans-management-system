@@ -44,8 +44,8 @@ const successnotif = (successmsg) =>{
     const modal = document.getElementById("modal-loan-form-template")
     modal.style.display = "block"
   }
-  if (auth.authState.status ===false) {
-    return <Navigate replace to="/staff/loan" />;
+  if (auth.authState.status ===false|| auth.authState.userType === "student") {
+    return <Navigate replace to="/" />;
   }else{
     return (
       <div> 

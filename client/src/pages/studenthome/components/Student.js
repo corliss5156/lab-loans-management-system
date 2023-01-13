@@ -22,8 +22,7 @@ export default function Student() {
   }
   
   useEffect(()=>{
-   console.log(loanSubmit)
-    console.log(auth)
+   
   }, [loanSubmit])
 
   const errornotif = (errormsg)=>{
@@ -53,7 +52,8 @@ export default function Student() {
   }
   
   if (auth.authState.status ===false || auth.authState.userType === "staff") {
-    return <Navigate replace to="/student/login" />;
+
+    return <Navigate replace to="/" />;
   } else {
     return (
       <div>

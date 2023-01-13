@@ -100,6 +100,7 @@ export default function ({errornotif, successnotif}) {
             setLoanItems(temp)
         })
     }
+    
     const onSubmit = (data, e) => {
         //Delete all entries in loanformtemplate where loanreason == loanreason 
         const url = API_HOST+"/loanformtemplate/delete/"+ loanreason
@@ -117,9 +118,6 @@ export default function ({errornotif, successnotif}) {
             successnotif("Successfully updated loan form template")
             closeModal()
         })
-        
-
-
     };
     const onError = (errors, e) => console.log(errors, e);
     
@@ -144,7 +142,7 @@ export default function ({errornotif, successnotif}) {
 
                     <Form.Group>
                         <Form.Label>Loan Reason</Form.Label>
-                        <Select onChange = {handleSetLoanReason}options = {loanTemplates} />
+                        <Select onChange = {handleSetLoanReason} options = {loanTemplates} />
                     </Form.Group>
                     <div id = "loan-form-items"> 
                         <h3> Items </h3> 
