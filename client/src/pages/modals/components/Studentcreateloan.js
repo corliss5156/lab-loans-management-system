@@ -171,7 +171,7 @@ export default function Studentcreateloan({successnotif , errornotif, loanSubmit
             
             <div>
               
-                {page === "1"? <Loandetails ref = {loandetailssubmit} childnavigate = {childnavigate} loan = {loan} setLoanitems = {setLoanitems} setloandetails = {setloandetails}/> : null}
+                {page === "1"? <Loandetails errornotif = {errornotif} ref = {loandetailssubmit} childnavigate = {childnavigate} loan = {loan} setLoanitems = {setLoanitems} setloandetails = {setloandetails}/> : null}
                 {page=== "2"? <Items ref = {itemsubmit} childnavigate = {childnavigate} items = {items} loanItems = {loanItems} childsetLoanItems = {childsetLoanItems} />: null } 
                 {page === "3"?<Review successnotif = {successnotif} errornotif={errornotif} handleSetLoanSubmit = {handleSetLoanSubmit} loanSubmit = {loanSubmit} childnavigate = {childnavigate} loanItems = {loanItems} loan = {loan} />: null}
             </div>

@@ -22,7 +22,9 @@ export default function Student() {
   }
   
   useEffect(()=>{
-   
+   console.log(
+    "reload student"
+   )
   }, [loanSubmit])
 
   const errornotif = (errormsg)=>{

@@ -91,4 +91,15 @@ router.get("/auth", validateToken, (req, res) => {
     
 });
 
+//Get distinct usernames 
+
+router.get("/distinct", async(req, res)=>{
+    await Students.aggregate("email", 'DISTINCT', {plain:false}).then((response)=>{
+        let result =[]
+        for (let i in response){
+            result.push(String(response[i]['DISTINCT']).split("@")[0])
+        }
+        res.json(result)
+    })
+})
 module.exports = router

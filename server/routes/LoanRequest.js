@@ -41,7 +41,17 @@ router.get('/date/:startdate/:enddate', async(req, res)=>{
     
 
 })
+//Get distinct loan request names 
 
+router.get("/distinct", async(req, res)=>{
+    await LoanRequests.aggregate("formreference", "DISTINCT", {plain:false}).then((response)=>{
+        let result = []
+        for (let i in response){
+            result.push(response[i]['DISTINCT'])
+        }
+        res.json(result)
+    })
+})
 
 //Get all loans for student 
 

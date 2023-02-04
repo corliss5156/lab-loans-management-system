@@ -34,6 +34,7 @@ function LoanTable({loanSubmit, successnotif, errornotif}){
 
   useEffect(()=> {
     const url = API_HOST + "/loanrequest/" + auth.authState.user 
+    console.log("reload table")
     axios.get(url).then((response)=>{
         setLoans(response.data)
     })

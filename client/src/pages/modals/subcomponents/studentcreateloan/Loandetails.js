@@ -10,7 +10,7 @@ import ENV from '../../../../config.js';
 
 const API_HOST = ENV.api_host;
 
-const Loandetails = forwardRef(({childnavigate, loan, setloandetails, setLoanitems}, ref) => {
+const Loandetails = forwardRef(({childnavigate, loan, setloandetails, setLoanitems, errornotif}, ref) => {
   const [username, setUsername] = useState(loan.borrowername)
   const [supervisoremail, setSupervisoremail] = useState(loan.supervisoremail)
   const [email, setEmail] = useState(loan.borroweremail)
@@ -21,7 +21,8 @@ const Loandetails = forwardRef(({childnavigate, loan, setloandetails, setLoanite
   const [lab, setLab] = useState(loan.lab)
   const [labOptions, setLabOptions] = useState([])
   const [groupmembers, setGroupmembers] = useState(loan.groupmembers)
-  
+  const [allStudents, setAllStudents] = useState([])
+  const [allLoanRequests, setAllLoanRequests] = useState([])
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   useEffect(()=>{
@@ -30,13 +31,20 @@ const Loandetails = forwardRef(({childnavigate, loan, setloandetails, setLoanite
       setLabOptions(response.data)
 
     })
+    //Get all loan requests form reference 
+    axios.get(API_HOST+"/loanrequest/distinct").then((response)=>{
+      setAllLoanRequests(response.data)
+    })
+    //Get all student usernames 
+    axios.get(API_HOST+"/student/distinct").then((response)=>{
+      setAllStudents(response.data)
+    })
 
   }, [])
   
   const addMember = () =>{
     const text = document.getElementById('new-group-member').value
     setGroupmembers([...groupmembers, text])
-   
   }
   useImperativeHandle(
     ref,
@@ -61,7 +69,9 @@ const Loandetails = forwardRef(({childnavigate, loan, setloandetails, setLoanite
   )
   const submit = () => {
     const year = new Date().getFullYear().toString()
-    childnavigate('2')
+    const formreference = loanreason + year + semester + "G" + groupnumber
+    if (allLoanRequests.includes(formreference)){errornotif("Invalid form reference. Please check Semester, Group Number and Loan Reason.")}
+    else{childnavigate('2')
     loan.formreference = loanreason + year + semester + "G" + groupnumber
     loan.borrowername = username
     loan.supervisoremail = supervisoremail
@@ -73,6 +83,7 @@ const Loandetails = forwardRef(({childnavigate, loan, setloandetails, setLoanite
     loan.groupmembers = groupmembers
     loan.lab = lab
     setloandetails(loan)
+  }
     
   }
   
@@ -96,12 +107,17 @@ const Loandetails = forwardRef(({childnavigate, loan, setloandetails, setLoanite
           <Form.Group className = 'md md-right'> 
             <Form.Label> Username </Form.Label>
             <Form.Control 
-            {...register("username", {required: true})}
+            {...register("username", {required: "Required",
+          validate: {
+            username: v =>{
+              return allStudents.includes(v) || "Leader must have an account"
+            }
+          }})}
              onChange = {(e)=> {setUsername(e.target.value)}} placeholder = {loan.borrowername ==='' ? "Enter leader's username": username}></Form.Control>
             <Form.Text className = "text-muted"> 
             Use NTU username 
             </Form.Text>
-            {errors.username && <Form.Text className = "error"><br></br>Required</Form.Text>}
+            {errors.username && <Form.Text className = "error"><br></br>{errors.username.message}</Form.Text>}
           </Form.Group>
           <Form.Group className = 'md md-left'> 
             <Form.Label> Supervisor's email</Form.Label>

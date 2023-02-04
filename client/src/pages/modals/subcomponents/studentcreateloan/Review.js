@@ -21,7 +21,7 @@ export default function Review({loan, loanItems, handleSetLoanSubmit, errornotif
 
   const submit = (event) =>{
     event.preventDefault()
-    console.log(loan.lab)
+  
 
     
     // Upload to loanitems table 
@@ -43,17 +43,13 @@ export default function Review({loan, loanItems, handleSetLoanSubmit, errornotif
       successnotif("Loan request successfully submitted.")
      
       for (const item in loanItems) {
-        console.log(item)
+        
         axios.post(API_HOST + "/loanitem", {
           formreference: loan.formreference, 
           item: item,   
           lab: loan.lab,
           qtyreceived: loanItems[item]['qtyreceived']? loanItems[item]['qtyreceived'] : 0  ,
           qtytoreceive: loanItems[item]['qtytoreceive']
-        }).then((response)=>{
-          console.log(response)
-          
-          
         })
       }
     })
@@ -65,9 +61,7 @@ export default function Review({loan, loanItems, handleSetLoanSubmit, errornotif
     handleSetLoanSubmit()
   }
 
-  useEffect(()=>{
-    console.log(loanItems)
-  })
+  
   return (
     <div className='modal-sub-page' id = 'review-sub-page'>
       <div className='modal-sub-page' id = 'loandetail-sub-page'>

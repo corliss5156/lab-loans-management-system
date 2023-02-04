@@ -95,7 +95,7 @@ export default function ({errornotif, successnotif}) {
         if (qty===""||parseInt(qty)<=0){errornotif("Quantity must be above 0.")}
         else if(item===""){errornotif("Item must be selected.")}
         else if(allLoanItems.includes(item)){errornotif("Item already added.")}
-        else if(!allLoanItems.includes(mainItem)){errornotif("Invalid main item. Item must be added first.")}
+        else if(mainItem!=="" && !allLoanItems.includes(mainItem)){errornotif("Invalid main item. Item must be added first.")}
         else{
             setLoanItems([...loanItems, {'item': item,'qtytoreceive': qty, 'mainitem': mainItem}])
         }
