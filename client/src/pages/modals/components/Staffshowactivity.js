@@ -31,7 +31,7 @@ export default function ({activity}) {
             <div className='modal-content'> 
                 <span onClick = {closeModal} className = "close"> &times; </span>
             <div className= 'modal-header'> 
-                <h2> Export loan data to CSV </h2> 
+                <h2> {activity.staff + " meditted stock for " + activity.item}  </h2> 
             </div>
             <div className='modal-sub-page'> 
                 <pre> {JSON.stringify(activity, null, 4)} </pre>

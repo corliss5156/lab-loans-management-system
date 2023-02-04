@@ -18,6 +18,7 @@ const API_HOST = ENV.api_host;
 
 export default function ({errornotif, successnotif}) {
     const [loanreason, setLoanReason] = useState("")
+    const [newLoanReason, setNewLoanReason] = useState("")
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [allItems, setAllItems] = useState([])
     const [loanItems, setLoanItems] = useState([])
@@ -25,9 +26,19 @@ export default function ({errornotif, successnotif}) {
     const [mainItem, setMainItem] = useState('')
     const [qty, setQty] = useState('')
     const [loanTemplates, setLoanTemplates] = useState([])
+    const [distinctLoanTemplates, setDistinctLoanTemplates] = useState([])
+    const [errorDistinct, setErrorDistinct] = useState(false)
     
     useEffect(()=>{
-        
+        if(newLoanReason!==""){
+            const control = document.getElementById("control-loan-reason")
+            control.style.display = "block"
+            control.textContent = newLoanReason
+        }else{
+        //Set control display to none 
+        const control = document.getElementById("control-loan-reason")
+        control.style.display = 'none'
+        }
         //Get list of all item 
         axios.get(API_HOST + "/item").then((response)=>{
             const temp = []
@@ -40,18 +51,21 @@ export default function ({errornotif, successnotif}) {
             setAllItems(temp)
             
         })
+
         //Get list of distinct loan templates 
 
         axios.get(API_HOST + "/loanformtemplate/loanreason/distinct").then((response)=>{
-            const temp = []
-
+            const temp = [{'value': "+ Create new", 'label': "+ Create new"}]
+            const temp1 = []
             for (let i in response.data){
                 temp.push({
                     'value': response.data[i], 
                     'label': response.data[i]
                 })
+                temp1.push(response.data[i])
             }
             setLoanTemplates(temp)
+            setDistinctLoanTemplates(temp1)
         })
 
 
@@ -77,8 +91,14 @@ export default function ({errornotif, successnotif}) {
         setQty(e.target.value)
     }
     const handleAddItem = (e)=>{
-        setLoanItems([...loanItems, {'item': item,'qtytoreceive': qty, 'mainitem': mainItem}])
-        
+        const allLoanItems = loanItems.map(a=>a.item)
+        if (qty===""||parseInt(qty)<=0){errornotif("Quantity must be above 0.")}
+        else if(item===""){errornotif("Item must be selected.")}
+        else if(allLoanItems.includes(item)){errornotif("Item already added.")}
+        else if(!allLoanItems.includes(mainItem)){errornotif("Invalid main item. Item must be added first.")}
+        else{
+            setLoanItems([...loanItems, {'item': item,'qtytoreceive': qty, 'mainitem': mainItem}])
+        }
     }
     const handleRemoveItem = (index)=>{
         const list = [...loanItems]
@@ -88,36 +108,73 @@ export default function ({errornotif, successnotif}) {
         
         setLoanItems(list)
     }
+    const handleSetNewLoanReason = (e) =>{
+        if (!distinctLoanTemplates.includes(e.target.value)){
+            setErrorDistinct(false)
+            setNewLoanReason(e.target.value)
+        }
+        else{ 
+            setErrorDistinct(true)
+        }
+
+        
+    }
 
     const handleSetLoanReason = (e)=>{
-        setLoanReason(e.value)
-        axios.get(API_HOST + "/loanformtemplate/"+ e.value).then((response)=>{
-            console.log(response.data)
-            const temp = []
-            for (let i in response.data) {
-                temp.push({'item': response.data[i].item, 'qtytoreceive': response.data[i].qtytoreceive, 'mainitem': response.data[i].mainitem})
-            }
-            setLoanItems(temp)
-        })
+        if (e.value === "+ Create new"){
+            //remove select and add new 
+            const select =  document.getElementById("select-loan-reason")
+            select.style.display = "none"
+            const control = document.getElementById("control-loan-reason")
+            control.style.display = 'block'
+        }
+        else{
+            setLoanReason(e.value)
+            axios.get(API_HOST + "/loanformtemplate/"+ e.value).then((response)=>{
+                console.log(response.data)
+                const temp = []
+                for (let i in response.data) {
+                    temp.push({'item': response.data[i].item, 'qtytoreceive': response.data[i].qtytoreceive, 'mainitem': response.data[i].mainitem})
+                }
+                setLoanItems(temp)
+            })
+        }
+        
     }
     
     const onSubmit = (data, e) => {
         //Delete all entries in loanformtemplate where loanreason == loanreason 
-        const url = API_HOST+"/loanformtemplate/delete/"+ loanreason
-        console.log(url)
-        axios.post(url).then((response)=>{
-            console.log(response)
+        if(newLoanReason ===""){
+            const url = API_HOST+"/loanformtemplate/delete/"+ loanreason
+            
+            axios.post(url).then((response)=>{
+                console.log(response)
+                for (let i in loanItems){
+                    axios.post(API_HOST + "/loanformtemplate", {
+                        loanreason: loanreason, 
+                        qtytoreceive: loanItems[i].qtytoreceive, 
+                        item: loanItems[i].item, 
+                        mainitem: loanItems[i].mainitem
+                    })
+                }
+                successnotif("Successfully updated loan form template")
+                closeModal()
+            })
+        }
+        //New loan reason, add all entries
+        else{
             for (let i in loanItems){
                 axios.post(API_HOST + "/loanformtemplate", {
-                    loanreason: loanreason, 
+                    loanreason: newLoanReason, 
                     qtytoreceive: loanItems[i].qtytoreceive, 
                     item: loanItems[i].item, 
                     mainitem: loanItems[i].mainitem
                 })
             }
-            successnotif("Successfully updated loan form template")
+            successnotif("Successfully created loan form template")
             closeModal()
-        })
+        }
+        
     };
     const onError = (errors, e) => console.log(errors, e);
     
@@ -142,7 +199,9 @@ export default function ({errornotif, successnotif}) {
 
                     <Form.Group>
                         <Form.Label>Loan Reason</Form.Label>
-                        <Select onChange = {handleSetLoanReason} options = {loanTemplates} />
+                        <Select id = "select-loan-reason"onChange = {handleSetLoanReason} options = {loanTemplates} />
+                        <Form.Control onChange = {handleSetNewLoanReason}id = "control-loan-reason" placeholder='Enter new loan reason'></Form.Control>
+                        {errorDistinct? <Form.Text className = "error">Loan reason already exists</Form.Text>: null}
                     </Form.Group>
                     <div id = "loan-form-items"> 
                         <h3> Items </h3> 

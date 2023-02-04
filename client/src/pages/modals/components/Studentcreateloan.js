@@ -59,7 +59,7 @@ export default function Studentcreateloan({successnotif , errornotif, loanSubmit
                 return (item.mainitem === '' || item.mainitem ===null)
               })
               const subitems = items.filter((item)=>{
-                return item.mainitem !== ''
+                return (item.mainitem !== ''&& item.mainitem !==null)
               })
               mainitems.forEach((item) => {
                 setofitems[item.item] = {
@@ -79,7 +79,8 @@ export default function Studentcreateloan({successnotif , errornotif, loanSubmit
               })
               console.log(mainitems)
               console.log(subitems)
-              subitems.forEach((item)=>{
+              if(subitems.length>0){
+                subitems.forEach((item)=>{
                 setofitems[item.mainitem]['subitems'].push({
                   'name': item.item, 
                   'quantity': item.qtytoreceive
@@ -89,6 +90,8 @@ export default function Studentcreateloan({successnotif , errornotif, loanSubmit
                   'qtyreceived': null
                 }
               })
+              }
+              
               console.log(setofLoanItems)
               setItems(items => ({
                 ...items, 

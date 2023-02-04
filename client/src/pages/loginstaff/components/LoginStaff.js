@@ -68,7 +68,7 @@ function LoginStaff() {
             <Form.Control onChange = {(e)=> {setPassword(e.target.value)}} className = "height" type = "password" placeholder = "Enter password"/>
           </Form.Group>
           <Form.Text id = "password-error"> Wrong password </Form.Text>
-          <p className =  "text-left"><Link  to = '/forgotpassword'> Forgot password? </Link> </p>
+          {/* <p className =  "text-left"><Link  to = '/forgotpassword'> Forgot password? </Link> </p> */}
           <Button onClick = {login} className = "height btn-block margin-10" variant = "primary" type = "submit"> Log in </Button>
         </Form>
       

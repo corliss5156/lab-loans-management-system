@@ -8,7 +8,12 @@ module.exports = (sequelize, DataTypes) =>{
             
         }, 
         staff: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING, 
+            foreignKey: true, 
+            references: {
+                model: "Staffs", 
+                key: "email"
+            }
         }
     })
     Labs.associate = (models) =>{
@@ -19,6 +24,10 @@ module.exports = (sequelize, DataTypes) =>{
      Labs.hasMany(models.LoanItems, {
         onDelete: "cascade", 
         hooks: true
+     }),
+     Labs.hasMany(models.LoanRequests, {
+        onDelete: "cascade", 
+        foreignKey: "lab"
      })
     }
     

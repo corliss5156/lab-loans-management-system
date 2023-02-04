@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "-": "^0.0.1",
     "@emailjs/browser": "^3.10.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -11,6 +12,7 @@
     "axios": "^0.27.2",
     "bootstrap": "^3.4.1",
     "formik": "^2.2.9",
+    "g": "^2.0.1",
     "json2csv": "^5.0.7",
     "jspdf": "^2.5.1",
     "react": "^18.2.0",
@@ -23,6 +25,7 @@
     "react-select": "^5.7.0",
     "react-toastify": "^9.1.1",
     "reactstrap": "^9.1.4",
+    "serve": "^14.1.2",
     "styled-components": "^5.3.5",
     "tippy.js": "^6.3.7",
     "web-vitals": "^2.1.4"

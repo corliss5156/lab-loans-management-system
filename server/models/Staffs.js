@@ -14,9 +14,22 @@ module.exports = (sequelize, DataTypes) =>{
             allowNULL: false
         }, 
         labs: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING, 
+            
         }
     })
+    Staffs.associate = (models) =>{
+        Staffs.hasMany(models.Activities, {
+            onDelete: "cascade", 
+            onUpdate: "cascade",
+            foreignKey: "staff"
+        })
+        Staffs.hasMany(models.Labs, {
+            onDelete: "cascade", 
+            onUpdate: "cascade",
+            foreignKey: "staff"
+        })
+    }
 
     return Staffs
 }

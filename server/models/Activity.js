@@ -8,7 +8,12 @@ module.exports = (sequelize, DataTypes) =>{
             type: DataTypes.INTEGER(10)
         }, 
         staff:{
-            type: DataTypes.STRING
+            type: DataTypes.STRING, 
+            foreignKey: true, 
+            references: {
+                model: "Staffs", 
+                key: "email"
+            }
         }, 
         item:{
             type: DataTypes.STRING

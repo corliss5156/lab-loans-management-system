@@ -27,7 +27,8 @@ module.exports = (sequelize, DataTypes) =>{
             type: DataTypes.STRING
         }, 
         borroweremail: {
-            type: DataTypes.STRING, 
+            type: DataTypes.STRING
+            
         }, 
         reason: {
             type: DataTypes.STRING

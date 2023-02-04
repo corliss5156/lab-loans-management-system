@@ -44,7 +44,7 @@ function SignupStaff() {
 }
 const onSubmit = (data, e)=>{
   e.preventDefault()
-  submit()
+  submit(e)
 }
 const onError = (errors, e) =>{
   console.log(errors, e)

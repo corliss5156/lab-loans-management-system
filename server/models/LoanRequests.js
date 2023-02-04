@@ -13,9 +13,6 @@ module.exports = (sequelize, DataTypes) =>{
         borroweremail: {
             type: DataTypes.STRING,
             allowNull: false, 
-            validate: {
-                isEmail: true
-            }
         }, 
         borrowdate: {
             type: DataTypes.DATEONLY
@@ -42,7 +39,8 @@ module.exports = (sequelize, DataTypes) =>{
             }
         }, 
         lab: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING, 
+            foreignKey: true
        },
         groupmembers: {
             type: DataTypes.STRING
