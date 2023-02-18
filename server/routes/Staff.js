@@ -2,9 +2,11 @@
 const express = require('express')
 const router = express.Router()
 const bcrypt = require("bcrypt")
+const path = require('path')
 const {sign} = require('jsonwebtoken')
 const validateToken = require('../middlewares/AuthMiddleware')
-
+const sendEmail = require("../middlewares/EmailContext")
+require("dotenv").config({path: path.resolve(__dirname,'../.env')})
 //Models 
 
 const {Staffs} = require("../models")
@@ -12,17 +14,73 @@ const {Staffs} = require("../models")
 
 router.post("/", async (req, res)=>{
    
-    const {email, password}= req.body; 
+    const {email, password, priviledge}= req.body; 
+    
     bcrypt.hash(password, 10).then((hash)=>{
-        Staffs.create({
+    
+        const staff =  Staffs.create({
             email: email, 
-            password: hash
+            password: hash, 
+            priviledge: priviledge
+        }).then((result)=>{
+            res.json(result)
+            
+        }).catch((err)=>{
+            res.json(err)
         })
+        
     })
-    res.json("Success")
 
 })
+//Reset password is used when user forgets password, an email will be sent to user's email
+router.put("/resetpassword", async (req, res)=>{
+    const {email, password} = req.body
+   
+console.log(email, password)
+    
+    bcrypt.hash(password, 10).then((hash)=>{
+        const staff = Staffs.update({password: hash}, {where: {
+            email: email
+        }}).then((result)=>{
+            if(result[0]){
+                res.json("Success")
+            sendEmail(process.env.EMAIL, email, password)
+            } else{
+                res.json("Error")
+            }
+            
+        }).catch((error)=>{
+            res.json("Error")
+        })
+    })
+})
 
+//Change password is used to change password solely, email will not be sent to user's email 
+router.put("/changepassword", async(req, res)=>{
+    const {email, password} = req.body
+    bcrypt.hash(password, 10).then((hash)=>{
+        const staff = Staffs.update({password: hash}, {where: {
+            email: email
+        }}).then((result)=>{
+            
+            res.json(result)
+        }).catch((error)=>{
+            res.json(error)
+        })
+    })
+})
+router.post("/delete", async(req,res)=>{
+    const {email} = req.body
+    await Staffs.destroy({
+        where:{
+            email: email
+        }
+    }).then((result)=>{
+        res.json(result)
+    }).catch((error)=>{
+        res.json(error)
+    })
+})
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
   
@@ -45,6 +103,7 @@ router.post("/login", async (req, res) => {
     }
 });
 
+
 router.get("/auth", validateToken, (req, res) => {
     console.log(req.user)
     res.json(req.user)   
@@ -64,10 +123,11 @@ router.get("/:username", async(req, res)=>{
     })
     res.json(staff)
 })
-router.put("/labs/:staff", async(req, res)=>{
-    const labs = req.body.labs
+router.put("/:staff", async(req, res)=>{
+    const {labs, priviledge} = req.body
     await Staffs.update({
-        labs: labs
+        labs: labs, 
+        priviledge: priviledge
     }, {
         where:{
             email: req.params.staff
@@ -75,7 +135,8 @@ router.put("/labs/:staff", async(req, res)=>{
     })
     res.json({
         email: req.params.staff, 
-        labs: labs
+        labs: labs, 
+        priviledge: priviledge
     })
     
 })

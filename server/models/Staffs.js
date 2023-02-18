@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes) =>{
         labs: {
             type: DataTypes.STRING, 
             
+        }, 
+        priviledge: {
+            type: DataTypes.BOOLEAN
         }
     })
     Staffs.associate = (models) =>{

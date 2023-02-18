@@ -11,7 +11,6 @@ const API_HOST = ENV.api_host;
 
 export default function Home() {
   const auth = useContext(AuthContext)
-  const { setAuthState } = useContext(AuthContext)
   useEffect(()=>{
     console.log(auth)
   })

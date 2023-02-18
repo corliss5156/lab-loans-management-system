@@ -56,9 +56,11 @@ input {
     margin: auto;
     padding-left: 2.5%;
     padding-right: 2.5%;
+
     width: 100%;
+
     max-width: 125rem;
-    min-height: 80vh;
+    
     overflow: hidden;
     border-radius: 2px;
     -webkit-animation-name: animatetop;
@@ -515,4 +517,9 @@ div.addItem{
 
 .loanitem{
   margin-bottom: 10px;
+}
+
+
+.delete-modal {
+  align-items: center;
 }

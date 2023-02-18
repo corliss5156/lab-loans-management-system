@@ -19,7 +19,7 @@ router.post('/', async (req, res)=>{
     
 })
 
-
+//Get recent activites, limit 5
 router.get("/limit", async(req, res)=>{
     const activity = await Activities.findAll({
         limit: 5, 

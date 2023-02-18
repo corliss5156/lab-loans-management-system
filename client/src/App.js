@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react';
 import { AuthContext } from './helpers/AuthContext';
 
 import ENV from './config'
+import Resetpassword from './pages/resetpassword/components/Resetpassword';
 const API_HOST = ENV.api_host;
 
 
@@ -62,12 +63,13 @@ function App() {
             <Route path = "/student/signup" element = {<SignupStudent />}  />
             <Route path = "/staff/login" element = {<LoginStaff/>} />
             <Route path = "/staff/signup" element = {<SignupStaff/>} /> 
-            {/* <Route path = "/forgotpassword" element = {<Forgotpassword/>} /> */}
+            <Route path = "/staff/forgotpassword" element = {<Forgotpassword/>} />
             <Route path = "/student/home" element = {<Student/>}  /> 
             <Route path = "/staff/home" element = {<Staff />} />
             <Route path = "/staff/inventory" element = {<Inventory />} />
             <Route path = "/staff/loan" element = {<Loan />} />
             <Route path = "/staff/report" element = {<Report />} />
+            <Route path = "/staff/resetpassword/:email" element = {<Resetpassword/>} /> 
             
           </Routes>
         </Router> 

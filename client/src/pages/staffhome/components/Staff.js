@@ -73,7 +73,7 @@ const showStaffCSVActivity = () =>{
               <Reports />
             </div> 
             <div> 
-              <Staffs successnotif = {successnotif}/>
+              <Staffs errornotif = {errornotif}successnotif = {successnotif}/>
             </div> 
           
           </div>

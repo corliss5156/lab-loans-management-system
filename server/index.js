@@ -50,7 +50,9 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 
 db.sequelize.sync({alter: true}).then(()=>{
+    
     app.listen(3001, ()=> {
         console.log("Running on port 3001")
+       
     })
 })

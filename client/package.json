@@ -26,6 +26,7 @@
     "react-toastify": "^9.1.1",
     "reactstrap": "^9.1.4",
     "serve": "^14.1.2",
+    "sib-api-v3-sdk": "^8.5.0",
     "styled-components": "^5.3.5",
     "tippy.js": "^6.3.7",
     "web-vitals": "^2.1.4"
