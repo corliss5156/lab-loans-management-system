@@ -5,7 +5,8 @@ const bcrypt = require("bcrypt")
 const path = require('path')
 const {sign} = require('jsonwebtoken')
 const validateToken = require('../middlewares/AuthMiddleware')
-const sendEmail = require("../middlewares/EmailContext")
+const {sendEmail, createAccountEmail}= require("../middlewares/EmailContext")
+
 require("dotenv").config({path: path.resolve(__dirname,'../.env')})
 //Models 
 
@@ -22,13 +23,15 @@ router.post("/", async (req, res)=>{
             email: email, 
             password: hash, 
             priviledge: priviledge
-        }).then((result)=>{
-            res.json(result)
-            
+        })
+        .then((result)=>{
+                
+                createAccountEmail(process.env.EMAIL, email, password)
+                res.json("Success")
         }).catch((err)=>{
             res.json(err)
         })
-        
+        // console.log(staff)
     })
 
 })
@@ -41,10 +44,10 @@ console.log(email, password)
     bcrypt.hash(password, 10).then((hash)=>{
         const staff = Staffs.update({password: hash}, {where: {
             email: email
-        }}).then((result)=>{
+        }}).then((result)=>{  
             if(result[0]){
                 res.json("Success")
-            sendEmail(process.env.EMAIL, email, password)
+                sendEmail(process.env.EMAIL, email, password)
             } else{
                 res.json("Error")
             }

@@ -25,5 +25,22 @@ const sendEmail = (sender, receiver, temppassword) => {
 } 
 
 
-module.exports = sendEmail
+const createAccountEmail = (sender, receiver, temppassword) => {
+  console.log("in create account")
+  const email = new SibApiV3Sdk.SendSmtpEmail();
+  email.subject = "Account created"
+  email.htmlContent = "An account has been created for you. Please use your temporary password to login: "+ temppassword 
+  email.sender = {"name": sender, "email": sender}
+  email.to = [{"name": receiver, "email": receiver}]
+  apiInstance.sendTransacEmail(email).then(function(data){
+      console.log(data)
+      return JSON.stringify(data)
+  }, function(error){
+      console.log(error)
+      return error
+  })
+} 
+
+
+module.exports = {sendEmail, createAccountEmail}
 

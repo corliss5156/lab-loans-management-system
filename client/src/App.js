@@ -12,6 +12,7 @@ import Loan from './pages/loans/components/Loan';
 import Inventory from './pages/inventory/components/Inventory';
 import Report from './pages/report/components/Report';
 import Forgotpassword from './pages/forgotpassword/components/Forgotpassword';
+import ForgotpasswordStudent from './pages/forgotpassword/components/ForgotpasswordStudent';
 import Home from './pages/home/components/Home'
 import axios from 'axios'; 
 import { useEffect, useState } from 'react';
@@ -19,6 +20,7 @@ import { AuthContext } from './helpers/AuthContext';
 
 import ENV from './config'
 import Resetpassword from './pages/resetpassword/components/Resetpassword';
+import ResetpasswordStudent from './pages/resetpassword/components/ResetpasswordStudent';
 const API_HOST = ENV.api_host;
 
 
@@ -64,12 +66,14 @@ function App() {
             <Route path = "/staff/login" element = {<LoginStaff/>} />
             <Route path = "/staff/signup" element = {<SignupStaff/>} /> 
             <Route path = "/staff/forgotpassword" element = {<Forgotpassword/>} />
+            <Route path = "/student/forgotpassword" element = {<ForgotpasswordStudent/>} />
             <Route path = "/student/home" element = {<Student/>}  /> 
             <Route path = "/staff/home" element = {<Staff />} />
             <Route path = "/staff/inventory" element = {<Inventory />} />
             <Route path = "/staff/loan" element = {<Loan />} />
             <Route path = "/staff/report" element = {<Report />} />
             <Route path = "/staff/resetpassword/:email" element = {<Resetpassword/>} /> 
+            <Route path = "/student/resetpassword/:email" element = {<ResetpasswordStudent/>} /> 
             
           </Routes>
         </Router> 
