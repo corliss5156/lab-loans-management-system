@@ -91,8 +91,7 @@ router.put('/:lab/:itemname', async(req, res)=>{
 module.exports = router 
 
 
-//Update stock
-
+//Increment stock 
 router.put("/increment/:lab/:itemname", async(req, res)=>{
     //Minus from available 
     await Stocks.increment(req.body.status, {
@@ -108,6 +107,7 @@ router.put("/increment/:lab/:itemname", async(req, res)=>{
     })
 })
 
+//Decrement stock 
 router.put("/decrement/:lab/:itemname", async(req, res)=>{
     //Minus from available 
     await Stocks.decrement(req.body.status, {

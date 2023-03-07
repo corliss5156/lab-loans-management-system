@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react'
-import {set, useForm} from 'react-hook-form'
+import { useForm} from 'react-hook-form'
 
 
 //Bootstrap 
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Select, { components, PlaceholderProps } from 'react-select'
-import { AiOutlineDownload, AiTwotoneEdit, AiFillDelete } from 'react-icons/ai'
+import { AiFillDelete } from 'react-icons/ai'
 
 //Backend
 import axios from 'axios'
@@ -200,7 +200,7 @@ export default function ({errornotif, successnotif}) {
                     <Form.Group>
                         <Form.Label>Loan Reason</Form.Label>
                         <Select id = "select-loan-reason"onChange = {handleSetLoanReason} options = {loanTemplates} />
-                        <Form.Control onChange = {handleSetNewLoanReason}id = "control-loan-reason" placeholder='Enter new loan reason'></Form.Control>
+                        <Form.Control onChange = {handleSetNewLoanReason} id = "control-loan-reason" placeholder='Enter new loan reason'></Form.Control>
                         {errorDistinct? <Form.Text className = "error">Loan reason already exists</Form.Text>: null}
                     </Form.Group>
                     <div id = "loan-form-items"> 

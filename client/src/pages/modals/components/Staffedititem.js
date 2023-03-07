@@ -1,6 +1,5 @@
 import React from 'react'
 import { useState, useEffect, useContext } from 'react'
-import Select from 'react-select'
 
 //Bootstrap 
 import Form from 'react-bootstrap/Form'

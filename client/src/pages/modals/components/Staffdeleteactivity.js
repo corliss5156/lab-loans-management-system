@@ -5,7 +5,7 @@ import {useForm} from 'react-hook-form'
 //Bootstrap 
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { AiOutlineDownload, AiFillDelete } from 'react-icons/ai'
+import { AiFillDelete } from 'react-icons/ai'
 
 //Backend
 import axios from 'axios'

@@ -47,8 +47,6 @@ router.post('/', async (req, res)=>{
 
 //Update item 
 
-//Update loan status
-
 router.put('/:itemname', async(req, res)=>{
     const newitem = req.body 
     await Items.update({description: newitem.description, 

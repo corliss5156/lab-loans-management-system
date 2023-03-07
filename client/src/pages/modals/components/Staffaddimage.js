@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
 
 
 //Bootstrap 
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { AiOutlineDownload, AiTwotoneEdit } from 'react-icons/ai'
+import { AiOutlineDownload } from 'react-icons/ai'
 
 //Backend
 import axios from 'axios'
@@ -40,7 +40,6 @@ export default function ({errornotif,  itemDetail, successnotif, handleSetImageU
                   setImage(e.target.files[0])
                 }
             }
-           
             reader.readAsDataURL(e.target.files[0])
         }else{
             errornotif("Maximum file size is 64kb.")
@@ -53,21 +52,15 @@ export default function ({errornotif,  itemDetail, successnotif, handleSetImageU
     
 
     const submit = ()=>{
-        
-        
         let reader = new FileReader()
         let imageid = null
         reader.onloadend = function(){
             let base64 = reader.result 
 
             axios.post(API_HOST + "/image", {
-              
                 image: base64
             }).then((response)=>{
-                
-                   
-                    //Update itemid
-                    console.log(response)
+
                     imageid = response.data.id
                     axios.put(API_HOST + "/item/image/"+itemDetail.name,{
                         imageid: imageid
@@ -77,9 +70,6 @@ export default function ({errornotif,  itemDetail, successnotif, handleSetImageU
                         handleSetImageUpdate()
                         closeModal()
                     })})
-                    
-                
-            
         }
         reader.readAsDataURL(image)
     }

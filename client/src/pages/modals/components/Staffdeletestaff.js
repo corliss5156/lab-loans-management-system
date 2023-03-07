@@ -1,17 +1,12 @@
-import React, {useState} from 'react'
-import {useForm} from 'react-hook-form'
+import React from 'react'
 
 
 //Bootstrap 
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { GrCircleAlert} from 'react-icons/gr'
-import { IconContext } from "react-icons";
-
 //Backend
 import axios from 'axios'
 import ENV from '../../../config.js'; 
-import FormRange from 'react-bootstrap/esm/FormRange.js'
 
 const API_HOST = ENV.api_host;
 export default function Staffdeletestaff({staff, successnotif, errornotif, handleUpdateLab}) {

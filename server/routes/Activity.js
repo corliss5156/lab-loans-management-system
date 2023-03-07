@@ -28,6 +28,7 @@ router.get("/limit", async(req, res)=>{
     res.json(activity)
 })
 
+//Get activities within specified date range
 router.get("/date/:startdate/:enddate", async(req, res)=>{
     const startdate = new Date(req.params.startdate)
     const enddate = new Date(req.params.enddate)
@@ -48,6 +49,7 @@ router.get("/date/:startdate/:enddate", async(req, res)=>{
    }
 })
 
+//Delete activity within specified date range. Start date not included
 router.post("/date/:startdate/:enddate", async(req, res)=>{
     const startdate = new Date(req.params.startdate)
     const enddate = new Date(req.params.enddate)

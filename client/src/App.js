@@ -5,7 +5,7 @@ import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import LoginStudent from './pages/loginstudent/components/LoginStudent';
 import LoginStaff from './pages/loginstaff/components/LoginStaff'
 import SignupStudent from './pages/signupstudent/components/SignupStudent';
-import SignupStaff from './pages/signupstaff/components/SignUpStaff';
+// import SignupStaff from './pages/signupstaff/components/SignUpStaff';
 import Student from './pages/studenthome/components/Student';
 import Staff from './pages/staffhome/components/Staff';
 import Loan from './pages/loans/components/Loan';
@@ -64,7 +64,8 @@ function App() {
             <Route path = "/student/login" element = {<LoginStudent />} />
             <Route path = "/student/signup" element = {<SignupStudent />}  />
             <Route path = "/staff/login" element = {<LoginStaff/>} />
-            <Route path = "/staff/signup" element = {<SignupStaff/>} /> 
+            {/* Would not need the following route because new staff accounts are created by the privileged lab tech account */}
+            {/* <Route path = "/staff/signup" element = {<SignupStaff/>} />  */}
             <Route path = "/staff/forgotpassword" element = {<Forgotpassword/>} />
             <Route path = "/student/forgotpassword" element = {<ForgotpasswordStudent/>} />
             <Route path = "/student/home" element = {<Student/>}  /> 

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {useForm} from 'react-hook-form'
 
 //Bootstrap 
 import Button from 'react-bootstrap/esm/Button';
 import Form from 'react-bootstrap/esm/Form'
-import {AiOutlineCloudUpload} from 'react-icons/ai'
+
 //Backend
 import ENV from '../../../config.js'; 
 import axios from 'axios'

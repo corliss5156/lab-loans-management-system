@@ -5,14 +5,14 @@ const bcrypt = require("bcrypt")
 const path = require('path')
 const {sign} = require('jsonwebtoken')
 const validateToken = require('../middlewares/AuthMiddleware')
-const {sendEmail, createAccountEmail}= require("../middlewares/EmailContext")
+const {resetPasswordEmail, createAccountEmail}= require("../middlewares/EmailContext")
 
 require("dotenv").config({path: path.resolve(__dirname,'../.env')})
 //Models 
 
 const {Staffs} = require("../models")
 
-
+//Create password 
 router.post("/", async (req, res)=>{
    
     const {email, password, priviledge}= req.body; 
@@ -25,13 +25,13 @@ router.post("/", async (req, res)=>{
             priviledge: priviledge
         })
         .then((result)=>{
-                
+                //Email  will be sent to staff email indicating the password 
                 createAccountEmail(process.env.EMAIL, email, password)
                 res.json("Success")
         }).catch((err)=>{
             res.json(err)
         })
-        // console.log(staff)
+        
     })
 
 })
@@ -47,7 +47,7 @@ console.log(email, password)
         }}).then((result)=>{  
             if(result[0]){
                 res.json("Success")
-                sendEmail(process.env.EMAIL, email, password)
+                resetPasswordEmail(process.env.EMAIL, email, password)
             } else{
                 res.json("Error")
             }
@@ -72,6 +72,8 @@ router.put("/changepassword", async(req, res)=>{
         })
     })
 })
+
+//Delete staff
 router.post("/delete", async(req,res)=>{
     const {email} = req.body
     await Staffs.destroy({

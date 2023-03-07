@@ -27,6 +27,7 @@ router.post('/', async (req, res)=>{
     
 })
 
+//Update quantity received for item
 router.put('/:formreference/item', async (req, res)=>{
     const qtyreceived = req.body.qtyreceived
     const item = req.body.item

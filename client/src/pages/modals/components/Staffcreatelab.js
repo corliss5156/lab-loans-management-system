@@ -9,7 +9,6 @@ import Select from 'react-select'
 //Backend
 import ENV from '../../../config.js'; 
 import axios from 'axios'
-import { FaTeamspeak } from 'react-icons/fa';
 
 const API_HOST = ENV.api_host;
 

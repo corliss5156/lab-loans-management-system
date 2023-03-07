@@ -25,44 +25,6 @@ router.post("/", async (req, res)=>{
 
 })
 
-router.post("/authenticate", async(req, res)=>{
-    const { email, password } = req.body;
-  
-    const student = await Students.findOne({ where: { email:email} });
-    
-    if (!student) {
-        const staff = await Staffs.findOne({where:  { email:email}})
-        if (!staff){res.json("User does not exist")}
-        else{
-            bcrypt.compare(password, staff.password).then((match) => {
-                if (!match) res.json({ error: "Wrong Username And Password Combination" });
-                else{
-                    const accessToken = sign({username: staff.email, id: staff.id}, "secret")
-                    res.json({
-                        accessToken:accessToken, 
-                        user: staff.email, 
-                        userType: "Staff"
-                    });
-                }
-              
-            });  
-        }
-    }
-    else{
-       bcrypt.compare(password, student.password).then((match) => {
-        if (!match) res.json({ error: "Wrong Username And Password Combination" });
-        else{
-            const accessToken = sign({username: student.email, id: student.id}, "secret")
-            res.json({
-                accessToken:accessToken, 
-                user: student.email, 
-                userType: "Student"
-            });
-        }
-      
-    });  
-    }
-})
 
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;

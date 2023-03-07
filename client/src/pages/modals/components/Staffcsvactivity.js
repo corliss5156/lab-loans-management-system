@@ -5,7 +5,7 @@ import {useForm} from 'react-hook-form'
 //Bootstrap 
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { AiOutlineDownload, AiTwotoneEdit } from 'react-icons/ai'
+import { AiOutlineDownload} from 'react-icons/ai'
 
 //Backend
 import axios from 'axios'
@@ -16,8 +16,7 @@ const API_HOST = ENV.api_host;
 
 
 export default function ({errornotif}) {
-    var today = new Date();
-    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+   
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [startDate, setStartDate] = useState("")
     const [endDate, setEndDate] = useState("")
@@ -26,7 +25,6 @@ export default function ({errornotif}) {
         const modal = document.getElementById('modal-activity-csv')
         modal.style.display = 'none'
     }
-    
    
     const downloadCSV = ()=>{
        

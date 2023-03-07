@@ -63,6 +63,7 @@ router.get('/:email', async(req, res)=>{
 
 })
 
+//Get all loan requests
 
 router.get('/', async(req, res)=>{
     
@@ -98,6 +99,7 @@ router.put('/status/:formreference', async(req, res)=>{
     })
 })
   
+//Update loan request return date 
 router.put('/returndate/:formreference', async(req, res)=>{
     const newreturndate = req.body.returndate
     await LoanRequests.update({returndate: newreturndate}, {where: {

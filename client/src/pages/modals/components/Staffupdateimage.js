@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
 
 
 //Bootstrap 
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { AiOutlineDownload, AiTwotoneEdit } from 'react-icons/ai'
+import { AiOutlineDownload} from 'react-icons/ai'
 
 //Backend
 import axios from 'axios'

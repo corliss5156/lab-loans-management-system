@@ -39,6 +39,7 @@ router.post("/delete/:loanreason", async(req, res)=>{
     res.json("Successfully deleted")
 })
 
+//Get distinct loan form templates 
 router.get("/loanreason/distinct", async(req, res)=>{
   await LoanFormTemplates.aggregate('loanreason', 'DISTINCT', {plain:false}).then((response)=>
     {let result = []
@@ -49,6 +50,7 @@ router.get("/loanreason/distinct", async(req, res)=>{
   )
 })
 
+//Create new loan form template 
 router.post('/', async (req, res)=>{
     const loanformtemplate= req.body
     await LoanFormTemplates.create(loanformtemplate).then(()=>{

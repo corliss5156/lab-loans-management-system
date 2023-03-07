@@ -28,24 +28,14 @@ const loanitemRouter = require("./routes/LoanItem")
 app.use("/loanitem", loanitemRouter)
 const activityRouter = require("./routes/Activity")
 app.use("/activity", activityRouter)
-
 const stockRouter = require("./routes/Stock")
 app.use("/stock", stockRouter)
-
 const imageRouter = require("./routes/Image")
 app.use("/image", imageRouter)
-
-
-// const inventorystockRouter = require("./routes/Inventorystock")
-// app.use("/inventorystock", inventorystockRouter)
-
 const reportRouter = require("./routes/Report")
 app.use("/report", reportRouter)
-
-
 const LoanFormTemplateRouter = require("./routes/LoanFormTemplate")
 app.use("/loanformtemplate", LoanFormTemplateRouter)
-
 app.use(bodyParser.urlencoded({extended: true}))
 
 

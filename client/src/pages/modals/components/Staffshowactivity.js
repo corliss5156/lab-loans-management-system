@@ -1,17 +1,5 @@
-import React, {useEffect, useState} from 'react'
-import {useForm} from 'react-hook-form'
+import React from 'react'
 
-
-//Bootstrap 
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
-import { AiOutlineDownload, AiTwotoneEdit } from 'react-icons/ai'
-
-//Backend
-import axios from 'axios'
-import ENV from '../../../config.js'; 
-
-const API_HOST = ENV.api_host;
 
 
 

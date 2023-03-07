@@ -8,7 +8,7 @@ let apiKey = defaultClient.authentications['api-key'];
 apiKey.apiKey = process.env.API_KEY
 let apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
-const sendEmail = (sender, receiver, temppassword) => {
+const resetPasswordEmail = (sender, receiver, temppassword) => {
     
     const email = new SibApiV3Sdk.SendSmtpEmail();
     email.subject = "Reset password"
@@ -26,7 +26,7 @@ const sendEmail = (sender, receiver, temppassword) => {
 
 
 const createAccountEmail = (sender, receiver, temppassword) => {
-  console.log("in create account")
+  
   const email = new SibApiV3Sdk.SendSmtpEmail();
   email.subject = "Account created"
   email.htmlContent = "An account has been created for you. Please use your temporary password to login: "+ temppassword 
@@ -42,5 +42,5 @@ const createAccountEmail = (sender, receiver, temppassword) => {
 } 
 
 
-module.exports = {sendEmail, createAccountEmail}
+module.exports = {resetPasswordEmail, createAccountEmail}
 

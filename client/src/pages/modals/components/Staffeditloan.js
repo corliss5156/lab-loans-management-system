@@ -5,7 +5,7 @@ import jsPDF from 'jspdf'
 import Form from 'react-bootstrap/Form'
 import {FiAlertCircle} from 'react-icons/fi'
 import {FiEdit} from 'react-icons/fi'
-import {AiOutlineDownload, AiOutlineImport} from 'react-icons/ai'
+import {AiOutlineDownload} from 'react-icons/ai'
 import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button'
 
@@ -22,7 +22,6 @@ const API_HOST = ENV.api_host;
 export default function Staffeditloan({successnotif, errornotif, email, formreference, handleUpdate}) {
    
     const auth = useContext(AuthContext)
-    const { register, handleSubmit, formState: { errors } } = useForm();
     const [originalstatus, setOriginalStatus] = useState([])
     const [newstatus, setNewStatus] = useState("")
     const [loan, setLoan] = useState([])
@@ -32,7 +31,6 @@ export default function Staffeditloan({successnotif, errornotif, email, formrefe
     const [items, setItems]  = useState([])
     const [groupmembers, setGroupmembers] = useState([])
     const [returnDate, setReturnDate] = useState('')
-    const [rowIndex, setRowIndex]= useState(0)
     const [remark, setRemark] = useState("")
 
     const handleReturnDate = (e)=>{
@@ -181,7 +179,7 @@ export default function Staffeditloan({successnotif, errornotif, email, formrefe
                     let allsame = true
                     for (let input in numberspinners){
                         if(numberspinners[input].className==="input"){
-                            console.log(numberspinners[input])
+                            
                             if(parseInt(numberspinners[input].name)!==parseInt(numberspinners[input].value)) {allsame = false}
                         }
                     }
@@ -476,8 +474,7 @@ export default function Staffeditloan({successnotif, errornotif, email, formrefe
             {items.map((item)=>{
                 
                 if(parseInt(item['qtytoreceive']) !== parseInt(item['qtyreceived'])){
-                    // setRowIndex(rowIndex+1)
-                    // console.log(rowIndex)
+                   
                     return(
                       <tr >
                         <td> <div><FiAlertCircle style = {{color: 'red'}}/></div></td>

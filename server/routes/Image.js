@@ -17,7 +17,7 @@ router.post('/', async (req, res)=>{
     })
     
 })
-
+//Update image based on image id 
 router.put("/", async(req, res)=>{
     const image = req.body
 
@@ -35,6 +35,7 @@ router.put("/", async(req, res)=>{
     })
 })
 
+//Get image based on image id
 router.get("/:id", async(req, res)=>{
     const image = await Images.findByPk(req.params.id)
     
