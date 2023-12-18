@@ -48,6 +48,7 @@ export default function ({errornotif, successnotif}) {
                     'label': response.data[i].name
                 })
             }
+            console.log(temp)
             setAllItems(temp)
             
         })

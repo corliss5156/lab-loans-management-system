@@ -4,7 +4,7 @@ const router = express.Router()
 const bcrypt = require("bcrypt")
 const {sign} = require('jsonwebtoken')
 const validateToken = require('../middlewares/AuthMiddleware')
-const {sendEmail, createAccountEmail}= require("../middlewares/EmailContext")
+const {resetPasswordEmail, createAccountEmail}= require("../middlewares/EmailContext")
 
 
 //Models 
@@ -80,13 +80,13 @@ console.log(email, password)
         }}).then((result)=>{  
             if(result[0]){
                 res.json("Success")
-                sendEmail(process.env.EMAIL, email, password)
+                resetPasswordEmail(process.env.EMAIL, email, password)
             } else{
                 res.json("Error")
             }
             
         }).catch((error)=>{
-            res.json("Error")
+            console.log(error)
         })
     })
 })

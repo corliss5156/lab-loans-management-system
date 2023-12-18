@@ -10,7 +10,7 @@ export default function Staffcreateitem({handleSetItemSubmit, successnotif, erro
     const [item, setItem] = useState({
         name: "", 
         description: "", 
-        subitems: [], 
+        subitems: [],
         remark: ""
     })
     const [stock, setStock] = useState([])
@@ -59,7 +59,7 @@ export default function Staffcreateitem({handleSetItemSubmit, successnotif, erro
                   setPage('1')
                 }}}> 
                     <div className='number active-num'> 1 </div> 
-                    <div className = 'active'> Loan details</div>
+                    <div className = 'active'> Item details</div>
                 </div>
                 <div className='modal-navbar-item' onClick = {()=>{if(page==='1'){
                   itemssubmit.current.submit()
@@ -68,7 +68,7 @@ export default function Staffcreateitem({handleSetItemSubmit, successnotif, erro
                   setPage('2')
                 }}}> 
                     <div className='number'> 2 </div>              
-                    <div> Items </div>
+                    <div> Stock </div>
                 </div> 
                 <div className='modal-navbar-item' onClick = {()=>{if(page==='1'){
                     if(page==="1"){

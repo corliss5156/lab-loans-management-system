@@ -505,8 +505,8 @@ export default function Staffeditloan({successnotif, errornotif, email, formrefe
           </tbody>
         </Table>
         <div className = 'form-footer'> 
-            <Button onClick = {edit} className = 'bth-block' variant = "secondary" type = "submit"> <FiEdit/> Edit </Button>
-          <Button onClick = {downloadpdf} className = "btn-block" variant = "primary" type = "submit" > <AiOutlineDownload/> Download PDF</Button>
+            <Button onClick = {edit} className = 'bth-block' variant = "primary" type = "submit"> <FiEdit/> Make edit </Button>
+          <Button onClick = {downloadpdf} className = "btn-block" variant = "secondary" type = "submit" > <AiOutlineDownload/> Download PDF</Button>
         </div>
         </div>
         </div>

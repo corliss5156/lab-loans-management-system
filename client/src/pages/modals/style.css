@@ -523,3 +523,8 @@ div.addItem{
 .delete-modal {
   align-items: center;
 }
+
+
+#modal-loan-form-template.modal .modal-content{
+  height: 80vh; 
+}

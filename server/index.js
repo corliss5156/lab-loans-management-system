@@ -38,11 +38,11 @@ const LoanFormTemplateRouter = require("./routes/LoanFormTemplate")
 app.use("/loanformtemplate", LoanFormTemplateRouter)
 app.use(bodyParser.urlencoded({extended: true}))
 
-
+const port = process.env.PORT || 3500;
 db.sequelize.sync({alter: true}).then(()=>{
     
-    app.listen(3001, ()=> {
-        console.log("Running on port 3001")
+    app.listen(port, ()=> {
+        console.log("Running on port ", port)
        
     })
 })
